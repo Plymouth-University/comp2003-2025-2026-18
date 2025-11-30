@@ -1,0 +1,69 @@
+
+// Select your database 
+use("LocalBite");
+
+const database = 'Users';
+const collection = 'users';
+
+// Create a new database.
+use(database);
+
+// Create a new collection.
+db.createCollection("Collection");
+
+// Inserting sample user into the database
+db.users.insertOne({
+    username: "john_doe",
+    email: "john@example.com",
+    phone: "0791587463201"
+
+});
+
+// View all users in the collection
+db.users.find()
+
+// Authentication (each auth record links to ONE user)
+
+db.authentication.insertMany({
+    _id: "auth101"
+    user_id: "u101",
+    password_hash: "hashed_password_1"
+})
+
+
+// Restaurant Collection
+
+db.createCollection("restaurants");
+
+db.restaurants.insertMany({
+    _id: 101,
+    name: "Turtle Bay",
+    cuisine: "Caribbean"
+    rating:5.6,
+    loctaion: "Plymouth"
+ {
+    _id: 102,
+    name: "Jollof's Kitchen"
+    cuisine: "African"
+    rating: 4.8,
+    loction: "Plymouth"
+ },
+
+
+
+
+});
+
+
+
+// Menu Items 
+// (each menu item links back to its restaurant using restaurant_id)
+
+db.menu_items.insertMany({
+    _id: "h986"
+    restaurant_id: "r201"
+    name: "Jerk Chicken Wrap",
+    description: "Grilled jerk chicken with fresh salad",
+    price: 8.99
+    category:"Wraps"
+})
