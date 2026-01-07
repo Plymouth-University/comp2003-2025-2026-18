@@ -39,7 +39,7 @@ export default function LoginScreen() {
   const login = async () => {
     try {
       const reponse = await fetch(
-        "https://comp2003-2025-2026-18.onrender.com",
+        "https://comp2003-2025-2026-18.onrender.com/api/login",
         {
           method: "POST",
           headers: {

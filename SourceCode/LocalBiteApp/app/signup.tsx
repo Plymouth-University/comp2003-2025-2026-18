@@ -42,7 +42,7 @@ export default function SignupScreen() {
   const signup = async () => {
     try {
       const response = await fetch(
-        "https://comp2003-2025-2026-18.onrender.com",
+        "https://comp2003-2025-2026-18.onrender.com/api/register",
         {
           method: "POST",
           headers: {
