@@ -8,18 +8,25 @@ const router = express.Router();
 //Register new user
 router.post('/register', async (req, res) => {
     try {
+        console.log("BODY:", req.body);
+
         const {username, email, password} = req.body;
 
         const existingUser = await User.findOne({email});
+        console.log("EXISITINGUSER:", existingUser);
         if (existingUser) return res.status(400).json({message: 'User already exists'});
 
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log("PASSWORD:", hashedPassword);
 
         const newUser = new User({username, email, password: hashedPassword});
+        console.log("NEW USER:", newUser);
         await newUser.save();
+        console.log("USER SAVED");
 
         res.status(201).json({message: 'User created successfully'});
     } catch (err) {
+        console.log("REGISTER ERROR", err);
         res.status(500).json({message: 'Server error'});
     }
 });
