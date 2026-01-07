@@ -38,7 +38,7 @@ export default function LoginScreen() {
 
   const login = async () => {
     try {
-      const reponse = await fetch(
+      const response = await fetch(
         "https://comp2003-2025-2026-18.onrender.com/api/login",
         {
           method: "POST",
@@ -52,7 +52,7 @@ export default function LoginScreen() {
         }
       );
 
-      const data = await Response.json();
+      const data = await response.json();
 
       if (!response.ok) {
         Alert.alert("Login failed", data.message);
