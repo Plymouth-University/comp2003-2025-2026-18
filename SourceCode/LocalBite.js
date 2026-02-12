@@ -172,6 +172,32 @@ db.authentication.insertMany([
     createdAt: new Date()
   }
 ]);
+db.achievements.insertMany([  
+  {
+    title: "Visit a Thai restaurant 5 times",
+    description: "Explore Thai cuisine",
+    cuisineTag: "Thai", // links to restaurant.cuisine
+    targetVisits: 5,
+    reward: 100,
+    createdAt: new Date()
+  },
+  {
+    title: "Place your first order",
+    description: "Complete your first order",
+    cuisineTag: null,
+    targetVisits: 1,
+    reward: 50,
+    createdAt: new Date()
+  },
+  {
+    title: "Place 10 orders",
+    description: "Complete 10 orders",tD
+    cuisineTag: null,
+    targetVisits: 10,
+    reward: 200,
+    createdAt: new Date()
+  }
+]);
 
 // ----------------------
 // QUICK CHECKS
@@ -185,5 +211,6 @@ db.menuItems.find({ restaurantId: localKitchenId });
 
 // Show restaurants with owner
 db.restaurants.find({});
+
 
 
