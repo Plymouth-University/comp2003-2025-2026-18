@@ -197,7 +197,27 @@ db.achievements.insertMany([
     reward: 200,
     createdAt: new Date()
   }
-]);
+]); 
+
+const Review = require("./reviews.collection");
+const Leaderboard = require("./leaderboard.collection");
+
+// Insert a test review
+await Review.create({
+  userId: "65f0a1c2b3e4d5f678901234",
+  restaurantId: "65f0a1c2b3e4d5f678901999",
+  rating: 5,
+  comment: "Amazing food!"
+});
+
+// Insert a leaderboard entry
+await Leaderboard.create({
+  userId: "65f0a1c2b3e4d5f678901234",
+  totalPoints: 200,
+  achievements: [
+    { title: "Placed 10 orders", reward: 200 }
+  ]
+});
 
 // ----------------------
 // QUICK CHECKS
@@ -211,6 +231,7 @@ db.menuItems.find({ restaurantId: localKitchenId });
 
 // Show restaurants with owner
 db.restaurants.find({});
+
 
 
 
