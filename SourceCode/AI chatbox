@@ -1,0 +1,48 @@
+from pymongo import MongoClient
+import tkinter as tk
+
+# Connect to MongoDB
+client = MongoClient("mongodb://localhost:27017/")
+db = client["localbite"]
+restaurants = db["restaurants"]
+
+def send_message():
+
+    user_message = entry.get()
+
+    if user_message.strip() == "":
+        return
+
+    chat.insert(tk.END, f"\nYou: {user_message}\n")
+
+    # Fetch top restaurants
+    results = list(restaurants.find().sort("rating", -1).limit(3))
+
+    if len(results) == 0:
+        chat.insert(tk.END, "AI: I couldn't find any restaurants.\n")
+    else:
+        chat.insert(tk.END, "AI: Here are the best restaurants right now:\n")
+
+        for r in results:
+            chat.insert(tk.END, f"🍜 {r['name']} ({r['cuisine']}) ⭐ {r['rating']}\n")
+
+    chat.see(tk.END)
+
+    entry.delete(0, tk.END)
+
+
+# Window
+window = tk.Tk()
+window.title("LocalBite AI Chatbot")
+window.geometry("500x500")
+
+chat = tk.Text(window, height=25, width=60)
+chat.pack(pady=10)
+
+entry = tk.Entry(window, width=40)
+entry.pack(side=tk.LEFT, padx=10)
+
+send_button = tk.Button(window, text="Send", command=send_message)
+send_button.pack(side=tk.LEFT)
+
+window.mainloop()
