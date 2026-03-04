@@ -3,7 +3,7 @@ import tkinter as tk
 
 # Connect to MongoDB
 client = MongoClient("mongodb://localhost:27017/")
-db = client["localbite"]
+db = client["Localbite"]
 restaurants = db["restaurants"]
 
 def send_message():
