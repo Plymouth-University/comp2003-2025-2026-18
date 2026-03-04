@@ -55,19 +55,76 @@ def send_message():
     chat.see(tk.END)
     entry.delete(0, tk.END)
 
-
 # Window
 window = tk.Tk()
 window.title("LocalBite AI Chatbot")
-window.geometry("500x500")
+window.geometry("600x600")
+window.configure(bg="#f4f4f4")
 
-chat = tk.Text(window, height=25, width=60)
-chat.pack(pady=10)
 
-entry = tk.Entry(window, width=40)
+# Header
+header = tk.Label(
+    window,
+    text="🍜 LocalBite AI Assistant",
+    font=("Helvetica", 18, "bold"),
+    bg="#ff914d",
+    fg="white",
+    pady=10
+)
+header.pack(fill=tk.X)
+
+
+# Chat Frame
+chat_frame = tk.Frame(window)
+chat_frame.pack(pady=10)
+
+scrollbar = tk.Scrollbar(chat_frame)
+
+chat = tk.Text(
+    chat_frame,
+    height=25,
+    width=70,
+    font=("Helvetica", 11),
+    yscrollcommand=scrollbar.set,
+    wrap="word"
+)
+
+scrollbar.config(command=chat.yview)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+chat.pack(side=tk.LEFT)
+
+
+# Input Frame
+input_frame = tk.Frame(window, bg="#f4f4f4")
+input_frame.pack(pady=10)
+
+
+entry = tk.Entry(
+    input_frame,
+    width=40,
+    font=("Helvetica", 12)
+)
 entry.pack(side=tk.LEFT, padx=10)
 
-send_button = tk.Button(window, text="Send", command=send_message)
+
+send_button = tk.Button(
+    input_frame,
+    text="Send",
+    font=("Helvetica", 11),
+    bg="#ff914d",
+    fg="white",
+    command=send_message
+)
 send_button.pack(side=tk.LEFT)
+
+
+# Allow Enter key to send messages
+window.bind('<Return>', lambda event: send_message())
+
+
+# Welcome message
+chat.insert(tk.END, "AI: Hello! I'm the LocalBite assistant 🍜\n")
+chat.insert(tk.END, "AI: Ask me for restaurant recommendations or cuisines!\n\n")
+
 
 window.mainloop()
