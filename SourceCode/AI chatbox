@@ -2,9 +2,11 @@ from pymongo import MongoClient
 import tkinter as tk
 
 # Connect to MongoDB
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://localhost:27017/") 
 db = client["Localbite"]
 restaurants = db["restaurants"]
+
+print("Restaurant data:", list(restaurants.find())
 
 def send_message():
 
