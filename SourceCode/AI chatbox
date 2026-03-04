@@ -10,26 +10,49 @@ print("Restaurant data:", list(restaurants.find())
 
 def send_message():
 
-    user_message = entry.get()
+    user_message = entry.get().lower()
 
     if user_message.strip() == "":
         return
 
     chat.insert(tk.END, f"\nYou: {user_message}\n")
 
-    # Fetch top restaurants
-    results = list(restaurants.find().sort("rating", -1).limit(3))
+  # Greeting
+    if "hello" in user_message or "hi" in user_message:
+        chat.insert(tk.END, "AI: Hi! I'm the LocalBite assistant. Ask me for food recommendations.\n")
 
-    if len(results) == 0:
-        chat.insert(tk.END, "AI: I couldn't find any restaurants.\n")
-    else:
-        chat.insert(tk.END, "AI: Here are the best restaurants right now:\n")
+# Cuisine request
+    elif "thai" in user_message:
+        results = restaurants.find({"cuisine": "Thai"}).sort("rating",-1).limit(3)
+
+        chat.insert(tk.END, "AI: Thai cuisine is a great choice! Here are some top spots:\n")
 
         for r in results:
-            chat.insert(tk.END, f"🍜 {r['name']} ({r['cuisine']}) ⭐ {r['rating']}\n")
+            chat.insert(tk.END, f"🍜 {r['name']} ⭐ {r['rating']}\n")
 
-    chat.see(tk.END) 
 
+# General recommendation
+    elif "recommend" in user_message or "best" in user_message:
+
+        results = restaurants.find().sort("rating",-1).limit(3)
+
+        chat.insert(tk.END, "AI: Here are the highest rated restaurants right now:\n")
+
+        for r in results:
+            chat.insert(tk.END, f"🍽 {r['name']} ({r['cuisine']}) ⭐ {r['rating']}\n")
+
+    # Achievements
+    elif "achievement" in user_message:
+
+        chat.insert(tk.END, "AI: You can unlock achievements like:\n")
+        chat.insert(tk.END, "🏅 Food Explorer – Visit 5 restaurants\n")
+        chat.insert(tk.END, "🏅 Master Reviewer – Write 10 reviews\n")
+        chat.insert(tk.END, "🏅 Cuisine Expert – Try 3 cuisines\n")
+
+    else:
+        chat.insert(tk.END, "AI: I'm not sure I understood. Try asking for restaurant recommendations.\n")
+
+    chat.see(tk.END)
     entry.delete(0, tk.END)
 
 
