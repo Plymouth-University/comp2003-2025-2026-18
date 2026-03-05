@@ -21,20 +21,37 @@ def send_message():
     if "hello" in user_message or "hi" in user_message:
         chat.insert(tk.END, "AI: Hi! I'm the LocalBite assistant. Ask me for food recommendations.\n")
 
-# Cuisine request
-    elif "thai" in user_message:
-        results = restaurants.find({"cuisine": "Thai"}).sort("rating",-1).limit(3)
+ # Cuisine detection
+    cuisines = ["thai", "indian", "italian", "chinese", "american", "cafe"]
 
-        chat.insert(tk.END, "AI: Thai cuisine is a great choice! Here are some top spots:\n")
+    for cuisine in cuisines:
+        if cuisine in user_message:
 
-        for r in results:
-            chat.insert(tk.END, f"🍜 {r['name']} ⭐ {r['rating']}\n")
+            results = list(
+                restaurants.find(
+                    {"cuisine": {"$regex": cuisine, "$options": "i"}}
+                ).sort("rating", -1).limit(3)
+            )
+
+            if results:
+                chat.insert(tk.END, f"AI: Here are some great {cuisine.title()} restaurants:\n\n")
+
+                for r in results:
+                    chat.insert(tk.END, f"🍽 {r['name']} ⭐ {r['rating']}\n")
+
+            else:
+                chat.insert(tk.END, f"AI: I couldn't find any {cuisine} restaurants.\n")
+
+            chat.see(tk.END)
+            entry.delete(0, tk.END)
+            return
+
 
 
 # General recommendation
     elif "recommend" in user_message or "best" in user_message:
 
-        results = restaurants.find().sort("rating",-1).limit(3)
+        results = restaurants.find().sort("rating",-1).limit(5)
 
         chat.insert(tk.END, "AI: Here are the highest rated restaurants right now:\n")
 
