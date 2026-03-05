@@ -110,6 +110,23 @@ scrollbar.config(command=chat.yview)
 scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 chat.pack(side=tk.LEFT)
 
+# Chat bubble styles
+chat.tag_configure(
+    "user",
+    justify="right",
+    background="#d2e3fc",
+    lmargin1=150,
+    lmargin2=150,
+    spacing3=5
+)
+
+chat.tag_configure(
+    "bot",
+    justify="left",
+    background="#f1f3f4",
+    rmargin=150,
+    spacing3=5
+)
 
 # Input Frame
 input_frame = tk.Frame(window, bg="#f4f4f4")
