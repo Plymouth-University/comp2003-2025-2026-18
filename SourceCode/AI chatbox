@@ -17,8 +17,8 @@ def send_message():
 
     chat.insert(tk.END, f"\nYou: {user_message}\n")
 
-  # Greeting
-    if "hello" in user_message or "hi" in user_message:
+  # Greeting (fixed so it doesn't trigger on "achievements)
+    if user_message in ["hi", "hello", "hey"]:
         chat.insert(tk.END, "AI: Hi! I'm the LocalBite assistant. Ask me for food recommendations.\n")
 
  # Cuisine detection
