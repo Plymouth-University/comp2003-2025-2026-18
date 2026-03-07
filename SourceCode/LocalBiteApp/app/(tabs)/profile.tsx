@@ -111,6 +111,34 @@ export default function ProfileScreen() {
               style={styles.input}
             />
           </View>
+          {/* Achievements Section */}
+<View style={styles.achievementSection}>
+  <Text style={styles.sectionTitle}>🏆 Achievements</Text>
+
+  <View style={styles.achievementRow}>
+    <View style={styles.achievementBox}>
+      <Text style={styles.achievementNumber}>5</Text>
+      <Text style={styles.achievementLabel}>Orders</Text>
+    </View>
+
+    <View style={styles.achievementBox}>
+      <Text style={styles.achievementNumber}>3</Text>
+      <Text style={styles.achievementLabel}>Badges</Text>
+    </View>
+  </View>
+
+  <View style={styles.achievementRow}>
+    <View style={styles.achievementBox}>
+      <Text style={styles.achievementNumber}>7</Text>
+      <Text style={styles.achievementLabel}>Day Streak</Text>
+    </View>
+
+    <View style={styles.achievementBox}>
+      <Text style={styles.achievementNumber}>12</Text>
+      <Text style={styles.achievementLabel}>Saved</Text>
+    </View>
+  </View>
+</View>
 
           <Pressable onPress={onSave} style={styles.primaryBtn}>
             <MaterialIcons name="save" size={18} color={COLORS.bg} />
@@ -207,4 +235,47 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
   },
   outlineText: { color: COLORS.accent, fontWeight: "900", fontSize: 16 },
+
+  achievementSection: {
+  marginTop: 20,
+  paddingTop: 16,
+  borderTopWidth: 1,
+  borderTopColor: COLORS.border,
+},
+
+sectionTitle: {
+  color: COLORS.text,
+  fontWeight: "900",
+  fontSize: 18,
+  marginBottom: 12,
+},
+
+achievementRow: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  marginBottom: 12,
+},
+
+achievementBox: {
+  flex: 1,
+  backgroundColor: COLORS.surface2,
+  borderRadius: 14,
+  paddingVertical: 16,
+  alignItems: "center",
+  borderWidth: 1,
+  borderColor: COLORS.border,
+  marginHorizontal: 4,
+},
+
+achievementNumber: {
+  color: COLORS.accent,
+  fontSize: 20,
+  fontWeight: "900",
+},
+
+achievementLabel: {
+  color: COLORS.muted,
+  marginTop: 6,
+  fontSize: 13,
+},
 });
