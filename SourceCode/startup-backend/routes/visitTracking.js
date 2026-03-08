@@ -26,3 +26,5 @@ router.post('/visit', async (req, res) => {
     await user.save();
     res.json({ message: "visit recorded"});
 });
+
+module.exports = router;
