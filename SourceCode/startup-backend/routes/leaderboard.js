@@ -4,7 +4,7 @@ const User = require("../models/User");
 
 router.get("/leaderboard", async (req, res) => {
     try {
-        const users = await USer.find({}, "email visitHistory");
+        const users = await User.find({}, "email visitHistory");
 
         const leaderboard = users.map(user => {
             const totalVisits = user.visitHistory.reduce(
