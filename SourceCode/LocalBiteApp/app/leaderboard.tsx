@@ -1,55 +1,59 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
+import { useEffect, useState } from "react";
 
-const leaderboardData = [
-  { id: "1", name: "Alex", points: 120, badge: "👑 Food King" },
-  { id: "2", name: "Maria", points: 95, badge: "🍜 Taste Master" },
-  { id: "3", name: "John", points: 80, badge: "🍕 Rising Foodie" },
-  { id: "4", name: "You", points: 70, badge: "☕ Coffee Explorer" },
-  { id: "5", name: "Jamie", points: 60, badge: "🌮 Street Food Lover" },
-  { id: "6", name: "Lina", points: 55, badge: "🍔 Burger Hunter" },
-];
+type LeaderboardUser = {
+  id: string;
+  username: string;
+  totalVisits: number;
+};
 
 export default function Leaderboard() {
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardUser[]>([]);
+
+  useEffect(() => {
+    fetch("https://comp2003-2025-2026-18.onrender.com/api/leaderboard")
+      .then(res => res.json())
+      .then(data => setLeaderboardData(data))
+      .catch(err => console.log("Leaderboard fetch error:", err));
+  }, []);
 
   const topThree = leaderboardData.slice(0, 3);
   const others = leaderboardData.slice(3);
 
   return (
     <View style={styles.container}>
-
       <Text style={styles.title}>🏆 Leaderboard</Text>
 
       {/* Top 3 */}
-      <View style={styles.topSection}>
+      {topThree.length === 3 && (
+        <View style={styles.topSection}>
 
-        {/* Second */}
-        <View style={styles.topCard}>
-          <View style={[styles.avatarLarge, styles.silver]} />
-          <Text style={styles.topName}>{topThree[1].name}</Text>
-          <Text style={styles.badge}>{topThree[1].badge}</Text>
-          <Text style={styles.points}>{topThree[1].points} pts</Text>
-          <Text style={styles.medal}>🥈</Text>
+          {/* Second */}
+          <View style={styles.topCard}>
+            <View style={[styles.avatarLarge, styles.silver]} />
+            <Text style={styles.topName}>{topThree[1].username}</Text>
+            <Text style={styles.points}>{topThree[1].totalVisits} visits</Text>
+            <Text style={styles.medal}>🥈</Text>
+          </View>
+
+          {/* First */}
+          <View style={styles.topCardMain}>
+            <View style={[styles.avatarLarge, styles.gold]} />
+            <Text style={styles.topName}>{topThree[0].username}</Text>
+            <Text style={styles.points}>{topThree[0].totalVisits} visits</Text>
+            <Text style={styles.medal}>🥇</Text>
+          </View>
+
+          {/* Third */}
+          <View style={styles.topCard}>
+            <View style={[styles.avatarLarge, styles.bronze]} />
+            <Text style={styles.topName}>{topThree[2].username}</Text>
+            <Text style={styles.points}>{topThree[2].totalVisits} visits</Text>
+            <Text style={styles.medal}>🥉</Text>
+          </View>
+
         </View>
-
-        {/* First */}
-        <View style={styles.topCardMain}>
-          <View style={[styles.avatarLarge, styles.gold]} />
-          <Text style={styles.topName}>{topThree[0].name}</Text>
-          <Text style={styles.badge}>{topThree[0].badge}</Text>
-          <Text style={styles.points}>{topThree[0].points} pts</Text>
-          <Text style={styles.medal}>🥇</Text>
-        </View>
-
-        {/* Third */}
-        <View style={styles.topCard}>
-          <View style={[styles.avatarLarge, styles.bronze]} />
-          <Text style={styles.topName}>{topThree[2].name}</Text>
-          <Text style={styles.badge}>{topThree[2].badge}</Text>
-          <Text style={styles.points}>{topThree[2].points} pts</Text>
-          <Text style={styles.medal}>🥉</Text>
-        </View>
-
-      </View>
+      )}
 
       {/* Remaining users */}
       <FlatList
@@ -57,28 +61,19 @@ export default function Leaderboard() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingBottom: 40 }}
         renderItem={({ item, index }) => (
-          <View
-            style={[
-              styles.rowCard,
-              item.name === "You" && styles.youCard
-            ]}
-          >
-
+          <View style={styles.rowCard}>
             <Text style={styles.rank}>#{index + 4}</Text>
 
             <View style={styles.avatarSmall} />
 
             <View style={{ flex: 1 }}>
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.badgeSmall}>{item.badge}</Text>
+              <Text style={styles.name}>{item.username}</Text>
             </View>
 
-            <Text style={styles.points}>{item.points}</Text>
-
+            <Text style={styles.points}>{item.totalVisits}</Text>
           </View>
         )}
       />
-
     </View>
   );
 }
@@ -147,11 +142,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  badge: {
-    fontSize: 11,
-    color: "#c9a27a",
-    marginVertical: 2,
-    textAlign: "center",
+  points: {
+    color: "#ff8c1a",
+    fontWeight: "bold",
   },
 
   /* LIST */
@@ -163,11 +156,6 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 14,
     marginBottom: 10,
-  },
-
-  youCard: {
-    borderWidth: 2,
-    borderColor: "#ff8c1a",
   },
 
   rank: {
@@ -188,15 +176,4 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-
-  badgeSmall: {
-    color: "#c9a27a",
-    fontSize: 11,
-  },
-
-  points: {
-    color: "#ff8c1a",
-    fontWeight: "bold",
-  },
-
 });
