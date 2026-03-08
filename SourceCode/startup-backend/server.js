@@ -16,9 +16,11 @@ app.use(cors());
 const authRoutes = require('./routes/auth');
 const discoveryRoutes = require('./routes/discovery');
 const visitRoutes = require('./routes/visitTracking');
+const leaderboardRoutes = require('./routes/leaderboard');
 app.use('/api', authRoutes);
 app.use('/api', discoveryRoutes);
 app.use('/api', visitRoutes); 
+app.use('/api', leaderboardRoutes);
 
 
 //Mongo Connection
