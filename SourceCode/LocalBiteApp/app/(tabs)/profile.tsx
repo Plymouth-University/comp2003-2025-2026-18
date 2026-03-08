@@ -1,6 +1,8 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
+import { router } from "expo-router";
+import { TouchableOpacity } from "react-native";
 import {
     Alert,
     Pressable,
@@ -111,6 +113,13 @@ export default function ProfileScreen() {
               style={styles.input}
             />
           </View>
+
+          <TouchableOpacity
+  style={styles.leaderboardButton}
+  onPress={() => router.push("/leaderboard")}
+>
+  <Text style={styles.leaderboardText}>🏆 View Leaderboard</Text>
+</TouchableOpacity>
           {/* Achievements Section */}
 <View style={styles.achievementSection}>
   <Text style={styles.sectionTitle}>🏆 Achievements</Text>
@@ -277,5 +286,19 @@ achievementLabel: {
   color: COLORS.muted,
   marginTop: 6,
   fontSize: 13,
+},
+
+leaderboardButton: {
+  marginTop: 20,
+  backgroundColor: "#ff8c1a",
+  padding: 12,
+  borderRadius: 10,
+  alignItems: "center",
+},
+
+leaderboardText: {
+  color: "#1a1208",
+  fontWeight: "bold",
+  fontSize: 16,
 },
 });

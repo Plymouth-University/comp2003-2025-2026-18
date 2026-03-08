@@ -39,13 +39,13 @@ const COLORS = {
 };
 
 /* ---------- DATA ---------- */
-const CATEGORIES = ["All", "Sri Lankan", "Pizza", "Burgers", "Indian", "Chinese", "Cafe"];
+const CATEGORIES = ["All", "Thai", "Italian", "American", "Indian", "Chinese", "Cafe",];
 
 const RESTAURANTS: Restaurant[] = [
   {
     id: "1",
-    name: "Island Bites",
-    cuisine: "Sri Lankan",
+    name: "The Thai House",
+    cuisine: "Thai",
     rating: 4.7,
     minutes: 18,
     price: "$$",
@@ -55,7 +55,7 @@ const RESTAURANTS: Restaurant[] = [
   },
   {
     id: "2",
-    name: "Spice Leaf",
+    name: "Himalayan Spice",
     cuisine: "Indian",
     rating: 4.6,
     minutes: 22,
@@ -99,8 +99,8 @@ const RESTAURANTS: Restaurant[] = [
   },
   {
     id: "6",
-    name: "Golden Wok",
-    cuisine: "Chinese",
+    name: "Mr Wok Thai Fish Bar and Grill",
+    cuisine: "Thai",
     rating: 4.2,
     minutes: 25,
     price: "$$",
@@ -132,8 +132,8 @@ const RESTAURANTS: Restaurant[] = [
   },
   {
     id: "9",
-    name: "Little Italy",
-    cuisine: "Pizza",
+    name: "Bella Italia",
+    cuisine: "Italian",
     rating: 4.6,
     minutes: 14,
     price: "$$",
@@ -165,8 +165,8 @@ const RESTAURANTS: Restaurant[] = [
   },
   {
     id: "12",
-    name: "Royal Lanka",
-    cuisine: "Sri Lankan",
+    name: "Veggie Perrin's",
+    cuisine: "Indian",
     rating: 4.9,
     minutes: 23,
     price: "$$",
