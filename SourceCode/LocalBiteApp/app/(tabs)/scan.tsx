@@ -3,6 +3,9 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
+import * as SecureStore from "expo-secure-store";
+import { jwtDecode } from "jwt-decode";
+
 export default function ScanScreen() {
   const router = useRouter();
   const [permission, requestPermission] = useCameraPermissions();
@@ -27,23 +30,53 @@ export default function ScanScreen() {
       barcodeScannerSettings={{
         barcodeTypes: ["qr", "ean13", "code128"],
       }}
-      onBarcodeScanned={(event) => {
+      onBarcodeScanned={async (event) => {
         if (scanned) return;
 
         setScanned(true);
 
+        
         console.log("QR DATA:", event.data);
-        alert("QR Detected: " + event.data);
+        
+        const restaurantId = event.data.replace("LOCALBITE_", "");
 
-        // FAKE VALIDATION
-        if (event.data === "LOCALBITE_PASTA123") {
-          router.push({
-            pathname: "/rate",
-            params: { id: "pasta123" },
-          });
-        } else {
-          alert("Invalid LocalBite QR Code");
+        
+        const token = await SecureStore.getItemAsync("token");
+
+        if (!token) {
+          alert("You must be logged in to perform this action");
+          return;
         }
+        
+        const decoded: any = jwtDecode(token);
+        const userId = decoded.id;
+
+        try {
+          const response = await fetch("https://comp2003-2025-2026-18.onrender.com/api/visit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+             },
+            body: JSON.stringify({
+              userId: userId, restaurantId
+            })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            router.push({
+              pathname: "/rate",
+              params: { id: restaurantId }
+            });
+          } else {
+            alert("Error: " + data.error);
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Network error");
+        }
+
 
         // Allow scanning again after 3 seconds
         setTimeout(() => setScanned(false), 3000);
