@@ -19,7 +19,7 @@ router.post('/visit', async (req, res) => {
 
     if (visit.count === 5) {
         user.achievements.push({
-            name: `Visited ${restaurtant.role} restauramt 5 times`
+            name: `Visited ${restaurtant.role} restaurant 5 times`
         });
     }
 
