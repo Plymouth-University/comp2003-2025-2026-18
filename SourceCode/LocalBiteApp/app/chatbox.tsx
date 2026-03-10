@@ -54,6 +54,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    paddingTop: 60,
+    paddingBottom: 20,
   },
 
   message: {
@@ -63,11 +65,12 @@ const styles = StyleSheet.create({
   inputRow: {
     flexDirection: "row",
     marginTop: 10,
+    marginBottom: 40,
   },
 
   input: {
     flex: 1,
-    backgroundColor: "#eee",
+    backgroundColor: "#eeeeee",
     padding: 10,
     borderRadius: 10,
   },

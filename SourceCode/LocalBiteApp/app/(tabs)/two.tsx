@@ -17,27 +17,115 @@ export default function ExploreScreen() {
   const restaurants = [
     {
       id: "1",
-      name: "Spice Leaf",
-      latitude: 50.3755,
-      longitude: -4.1427,
+      name: "The Thai House",
+      latitude: 50.3684066,
+      longitude: -4.1380422,
       rating: 4.5,
-      category: "Indian",
+      category: "Thai",
     },
     {
       id: "2",
-      name: "Devon Cafe",
-      latitude: 50.3760,
-      longitude: -4.1400,
+      name: "Mr Woks Ltd",
+      latitude: 50.3737666,
+      longitude: -4.1381529,
       rating: 4.2,
-      category: "Cafe",
+      category: "Thai Noodle",
     },
     {
       id: "3",
-      name: "Dockside Pizza",
-      latitude: 50.3745,
-      longitude: -4.1415,
+      name: "Himalayan Spice",
+      latitude: 50.366806,
+      longitude: -4.1350326,
+      rating: 4.5,
+      category: "Indian / Nepalese",
+    },
+    {
+      id: "4",
+      name: "Veggie Perrins",
+      latitude: 50.3732299,
+      longitude: -4.1446159,
       rating: 4.7,
+      category: "Indian / Vegetarian",
+    },
+    {
+      id: "5",
+      name: "Bella Italia",
+      latitude: 50.3693942,
+      longitude: -4.1457105,
+      rating: 3.8,
       category: "Italian",
+    },
+    {
+      id: "6",
+      name: "The Plymouth Stable",
+      latitude: 50.3685538,
+      longitude: -4.13489,
+      rating: 4.4,
+      category: "Pizza / Pasta",
+    },
+    {
+      id: "7",
+      name: "Desire Plymouth",
+      latitude: 50.3683692,
+      longitude: -4.1380248,
+      rating: 4.5,
+      category: "Restaurant / Bar",
+    },
+    {
+      id: "8",
+      name: "The Little Kitchen",
+      latitude: 50.3821206,
+      longitude: -4.1341354,
+      rating: 4.5,
+      category: "Cafe",
+    },
+    {
+      id: "9",
+      name: "Boston Tea Party",
+      latitude: 50.36866,
+      longitude: -4.1351541,
+      rating: 4.5,
+      category: "Cafe / Brunch",
+    },
+    {
+      id: "10",
+      name: "Asian Noodle Bar",
+      latitude: 50.3691283,
+      longitude: -4.1381354,
+      rating: 4.9,
+      category: "Chinese",
+    },
+    {
+      id: "11",
+      name: "Imperial Garden",
+      latitude: 50.3723265,
+      longitude: -4.1349629,
+      rating: 4.2,
+      category: "Chinese",
+    },
+    {
+      id: "12",
+      name: "SmashLand Burgers",
+      latitude: 50.3650396,
+      longitude: -4.134353,
+      rating: 5.0,
+      category: "Burger / American",
+    },
+    {
+      id: "13",
+      name: "Bombay Burger Kitchen",
+      latitude: 50.3708867,
+      longitude: -4.134193,
+      rating: 4.9,
+      category: "Burger",
+    },
+    {
+      id: "14",
+      name: "Cap'n Jaspers",
+      latitude: 50.3676093,
+      longitude: -4.1341846,
+      rating: 4.5,
+      category: "Cafe / Burger",
     },
   ];
 
@@ -48,32 +136,25 @@ export default function ExploreScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      
       {/* SEARCH BAR */}
       <TextInput
-        placeholder="Search for a cafe..."
+        placeholder="Search for a restaurant..."
         value={search}
         onChangeText={setSearch}
         style={styles.searchInput}
       />
 
-      {/* Toggle Buttons */}
+      {/* TOGGLE BUTTONS */}
       <View style={styles.toggleRow}>
         <Pressable
-          style={[
-            styles.toggleButton,
-            viewMode === "map" && styles.activeButton,
-          ]}
+          style={[styles.toggleButton, viewMode === "map" && styles.activeButton]}
           onPress={() => setViewMode("map")}
         >
           <Text style={styles.toggleText}>Map</Text>
         </Pressable>
 
         <Pressable
-          style={[
-            styles.toggleButton,
-            viewMode === "list" && styles.activeButton,
-          ]}
+          style={[styles.toggleButton, viewMode === "list" && styles.activeButton]}
           onPress={() => setViewMode("list")}
         >
           <Text style={styles.toggleText}>List</Text>
@@ -85,19 +166,16 @@ export default function ExploreScreen() {
         <MapView
           style={{ flex: 1 }}
           initialRegion={{
-            latitude: 50.3755,
-            longitude: -4.1427,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
+            latitude: 50.3700,
+            longitude: -4.1380,
+            latitudeDelta: 0.04,
+            longitudeDelta: 0.04,
           }}
         >
           {filteredRestaurants.map((r) => (
             <Marker
               key={r.id}
-              coordinate={{
-                latitude: r.latitude,
-                longitude: r.longitude,
-              }}
+              coordinate={{ latitude: r.latitude, longitude: r.longitude }}
               title={r.name}
               description={`${r.category} • ⭐ ${r.rating}`}
             />
@@ -126,7 +204,7 @@ export default function ExploreScreen() {
 const styles = StyleSheet.create({
   searchInput: {
     marginHorizontal: 15,
-    marginTop: 10,
+    marginTop: 15,
     padding: 10,
     borderRadius: 10,
     backgroundColor: "#f0f0f0",

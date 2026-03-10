@@ -21,7 +21,6 @@ type Restaurant = {
   cuisine: string;
   rating: number;
   minutes: number;
-  price: "$" | "$$" | "$$$";
   distanceKm: number;
   imageUrl: string;
 };
@@ -39,7 +38,7 @@ const COLORS = {
 };
 
 /* ---------- DATA ---------- */
-const CATEGORIES = ["All", "Thai", "Italian", "American", "Indian", "Chinese", "Cafe",];
+const CATEGORIES = ["All", "Thai", "Italian", "American", "Indian", "Chinese", "Cafe"];
 
 const RESTAURANTS: Restaurant[] = [
   {
@@ -48,10 +47,9 @@ const RESTAURANTS: Restaurant[] = [
     cuisine: "Thai",
     rating: 4.7,
     minutes: 18,
-    price: "$$",
     distanceKm: 1.2,
     imageUrl:
-      "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1559847844-5315695dadae?w=1200&q=80&auto=format&fit=crop",
   },
   {
     id: "2",
@@ -59,43 +57,39 @@ const RESTAURANTS: Restaurant[] = [
     cuisine: "Indian",
     rating: 4.6,
     minutes: 22,
-    price: "$$",
     distanceKm: 2.4,
     imageUrl:
-      "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1200&q=80&auto=format&fit=crop",
   },
   {
     id: "3",
-    name: "Dockside Pizza",
-    cuisine: "Pizza",
+    name: "Bella Italia",
+    cuisine: "Italian",
     rating: 4.4,
     minutes: 15,
-    price: "$",
     distanceKm: 0.9,
     imageUrl:
-      "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=1200&q=80&auto=format&fit=crop",
   },
   {
     id: "4",
-    name: "Burger Yard",
-    cuisine: "Burgers",
+    name: "Smashland Burgers",
+    cuisine: "American",
     rating: 4.3,
     minutes: 12,
-    price: "$",
     distanceKm: 1.0,
     imageUrl:
-      "https://images.unsplash.com/photo-1550547660-d9450f859349?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&q=80&auto=format&fit=crop",
   },
   {
     id: "5",
-    name: "Lotus Cafe",
+    name: "The Little Kitchen",
     cuisine: "Cafe",
     rating: 4.5,
     minutes: 10,
-    price: "$",
     distanceKm: 0.6,
     imageUrl:
-      "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&q=80&auto=format&fit=crop",
   },
   {
     id: "6",
@@ -103,65 +97,59 @@ const RESTAURANTS: Restaurant[] = [
     cuisine: "Thai",
     rating: 4.2,
     minutes: 25,
-    price: "$$",
     distanceKm: 3.1,
     imageUrl:
-      "https://images.unsplash.com/photo-1553621042-f6e147245754?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1552611052-33e04de081de?w=1200&q=80&auto=format&fit=crop",
   },
   {
     id: "7",
-    name: "Curry Leaf",
-    cuisine: "Indian",
+    name: "Asian Noodle Bar",
+    cuisine: "Chinese",
     rating: 4.8,
     minutes: 20,
-    price: "$$",
     distanceKm: 1.5,
     imageUrl:
-      "https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1200&q=80&auto=format&fit=crop",
   },
   {
     id: "8",
-    name: "Street Wok",
+    name: "Imperial Garden",
     cuisine: "Chinese",
     rating: 4.1,
     minutes: 17,
-    price: "$",
     distanceKm: 1.1,
     imageUrl:
-      "https://images.unsplash.com/photo-1555126634-323283e090fa?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=1200&q=80&auto=format&fit=crop",
   },
   {
     id: "9",
-    name: "Bella Italia",
+    name: "The Plymouth Stable",
     cuisine: "Italian",
     rating: 4.6,
     minutes: 14,
-    price: "$$",
     distanceKm: 0.8,
     imageUrl:
-      "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1525755662778-989d0524087e?w=1200&q=80&auto=format&fit=crop",
   },
   {
     id: "10",
-    name: "Urban Burger Co.",
-    cuisine: "Burgers",
+    name: "Bombay Burger Kitchen",
+    cuisine: "American",
     rating: 4.4,
     minutes: 16,
-    price: "$",
     distanceKm: 1.9,
     imageUrl:
-      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1550547660-d9450f859349?w=1200&q=80&auto=format&fit=crop",
   },
   {
     id: "11",
-    name: "Cafe Aroma",
+    name: "Boston Tea Party",
     cuisine: "Cafe",
     rating: 4.3,
     minutes: 9,
-    price: "$",
     distanceKm: 0.5,
     imageUrl:
-      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80&auto=format&fit=crop",
   },
   {
     id: "12",
@@ -169,10 +157,29 @@ const RESTAURANTS: Restaurant[] = [
     cuisine: "Indian",
     rating: 4.9,
     minutes: 23,
-    price: "$$",
     distanceKm: 2.7,
     imageUrl:
-      "https://images.unsplash.com/photo-1600628422019-17d2d7c63b15?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=1200&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "13",
+    name: "Can'n Jaspers",
+    cuisine: "American",
+    rating: 4.9,
+    minutes: 23,
+    distanceKm: 2.7,
+    imageUrl:
+      "https://images.unsplash.com/photo-1550317138-10000687a72b?w=1200&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "14",
+    name: "Desire Plymouth",
+    cuisine: "Italian",
+    rating: 4.9,
+    minutes: 23,
+    distanceKm: 2.7,
+    imageUrl:
+      "https://images.unsplash.com/photo-1546549032-9571cd6b27df?w=1200&q=80&auto=format&fit=crop",
   },
 ];
 
@@ -260,14 +267,13 @@ export default function Discover() {
           renderItem={({ item }) => (
             <Pressable
               style={styles.card}
-              onPress={() => router.push(`/restaurant/${item.id}`)} // ✅ ADDED
+              onPress={() => router.push(`/restaurant/${item.id}`)}
             >
               <Image source={{ uri: item.imageUrl }} style={styles.cardImage} />
 
               <View style={{ paddingTop: 12 }}>
                 <View style={styles.cardHeaderRow}>
                   <Text style={styles.cardTitle}>{item.name}</Text>
-                  <Text style={styles.priceText}>{item.price}</Text>
                 </View>
 
                 <Text style={styles.cardMeta}>
@@ -296,6 +302,14 @@ export default function Discover() {
           }
         />
       </Animated.View>
+
+      {/* ---------- CHAT TOGGLE BUTTON ---------- */}
+      <Pressable
+        style={styles.chatButton}
+        onPress={() => router.push("/chatbox")}
+      >
+        <MaterialIcons name="chat" size={24} color={COLORS.text} />
+      </Pressable>
     </SafeAreaView>
   );
 }
@@ -379,6 +393,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+
+  chatButton: {
+    position: "absolute",
+    bottom: 30,
+    right: 20,
+    backgroundColor: COLORS.accent,
+    padding: 15,
+    borderRadius: 50,
+    elevation: 5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   starsRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   ratingText: { color: COLORS.text, fontWeight: "900" },
 
