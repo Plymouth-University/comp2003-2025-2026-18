@@ -1,0 +1,81 @@
+[{
+  "_id": {
+    "$oid": "698dcb11f657b76848792326"
+  },
+  "userId": {
+    "$oid": "698dcb11f657b76848792327"
+  },
+  "achievementId": {
+    "$oid": "698dcb11f657b76848792328"
+  },
+  "progress": 0,
+  "targetVisits": 5,
+  "completed": false,
+  "unlockedAt": null,
+  "createdAt": {
+    "$date": "2026-02-12T12:44:01.910Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "698e200f898db444d363f180"
+  },
+  "userId": {
+    "$oid": "698e200f898db444d363f181"
+  },
+  "achievementId": {
+    "$oid": "698dc9cbf657b76848792320"
+  },
+  "progress": 2,
+  "targetVisits": 5,
+  "completed": false,
+  "completedAt": null,
+  "createdAt": {
+    "$date": "2026-02-12T18:46:39.220Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-12T18:46:39.220Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "698e200f898db444d363f182"
+  },
+  "userId": {
+    "$oid": "698e200f898db444d363f183"
+  },
+  "achievementId": {
+    "$oid": "698dc9cbf657b76848792320"
+  },
+  "progress": 5,
+  "targetVisits": 5,
+  "completed": true,
+  "completedAt": {
+    "$date": "2026-02-10T00:00:00.000Z"
+  },
+  "rewardClaimed": false,
+  "createdAt": {
+    "$date": "2026-01-15T00:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-10T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "698f295a62e12dcd7a79b63a"
+  },
+  "achievementId": {
+    "$oid": "698dc9cbf657b76848792320"
+  },
+  "userId": {
+    "$oid": "692cd97dfc8c2ec4130513ef"
+  },
+  "completed": false,
+  "completedAt": null,
+  "progress": 3,
+  "targetVisits": 5,
+  "updatedAt": {
+    "$date": "2026-02-13T13:38:34.617Z"
+  }
+}]

@@ -1,0 +1,68 @@
+[{
+  "_id": {
+    "$oid": "699f0f3b20ffabc8786bbc67"
+  },
+  "userId": {
+    "$oid": "65f0a1c2b3e4d5f678901234"
+  },
+  "totalPoints": 200,
+  "achievements": [
+    {
+      "title": "Placed 10 orders",
+      "reward": 200,
+      "achievedAt": {
+        "$date": "2026-02-25T15:03:23.227Z"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-02-25T15:03:23.227Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-25T15:03:23.227Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69a89f03a5900c8007d739f1"
+  },
+  "userId": "user1",
+  "username": "Tawa",
+  "points": 130,
+  "reviewsWritten": 9,
+  "restaurantsVisited": 5,
+  "achievements": [
+    "Food Explorer"
+  ],
+  "lastUpdated": {
+    "$date": "2026-03-04T21:07:15.218Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69a89f03a5900c8007d739f2"
+  },
+  "userId": "user2",
+  "username": "Alex",
+  "points": 95,
+  "reviewsWritten": 6,
+  "restaurantsVisited": 4,
+  "achievements": [],
+  "lastUpdated": {
+    "$date": "2026-03-04T21:07:15.218Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69a89f03a5900c8007d739f3"
+  },
+  "userId": "user3",
+  "username": "Sam",
+  "points": 80,
+  "reviewsWritten": 5,
+  "restaurantsVisited": 3,
+  "achievements": [],
+  "lastUpdated": {
+    "$date": "2026-03-04T21:07:15.218Z"
+  }
+}]

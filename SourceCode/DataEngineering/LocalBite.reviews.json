@@ -1,0 +1,19 @@
+[{
+  "_id": {
+    "$oid": "699f0ea420ffabc8786bbc65"
+  },
+  "userId": {
+    "$oid": "65f0a1c2b3e4d5f678901234"
+  },
+  "restaurantId": {
+    "$oid": "65f0a1c2b3e4d5f678901999"
+  },
+  "rating": 5,
+  "comment": "Amazing food!",
+  "createdAt": {
+    "$date": "2026-02-25T15:00:52.812Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-25T15:00:52.812Z"
+  }
+}]
