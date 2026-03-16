@@ -102,6 +102,9 @@ def send_message():
 
                     chat.tag_config(tag, foreground="blue", underline=True)
 
+                    chat.tag_bind(tag, "<Enter>", lambda e: chat.config(cursor="hand2"))
+                    chat.tag_bind(tag, "<Leave>", lambda e: chat.config(cursor=""))
+
                     chat.tag_bind(tag, "<Button-1>", lambda e, restaurant=r: open_website(restaurant.get("website")))
 
             else:
