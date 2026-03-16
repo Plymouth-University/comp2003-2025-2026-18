@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 import tkinter as tk
+import webbrowser
 
 # Connect to MongoDB
 client = MongoClient("mongodb+srv://localbite_user:localbite1234@cluster0.allr1ut.mongodb.net/?retryWrites=true&w=majority") 
