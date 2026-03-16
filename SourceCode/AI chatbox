@@ -7,7 +7,11 @@ client = MongoClient("mongodb+srv://localbite_user:localbite1234@cluster0.allr1u
 db = client["Localbite"]
 restaurants = db["Restaurants"]
 
-print("Restaurant data:", list(restaurants.find())
+def open_website(url):
+    if url:
+        webbrowser.open(url)
+    else:
+        tk.message.showinfo("No website", "Sorry, this restaurant doesn't have a website listed.") 
 
 def send_message():
 
