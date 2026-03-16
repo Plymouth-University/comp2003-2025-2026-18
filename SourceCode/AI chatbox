@@ -42,7 +42,18 @@ def send_message():
                 chat.insert(tk.END, f"AI: Here are some great {cuisine.title()} restaurants:\n\n")
 
                 for r in results:
-                    chat.insert(tk.END, f"🍽 {r['name']} ⭐ {r['rating']}\n")
+                    tag = str(r["_id"])  # unique tag for each restaurant
+
+                # Insert clickable restaurant name
+                chat.insert(tk.END, f"🍽 {r['name']} ⭐ {r['rating']}\n", tag)
+
+                # Make it look like a hyperlink
+                chat.tag_config(tag, foreground="blue", underline=True)
+
+                # Bind click event to open the website
+                chat.tag_bind(tag, "<Button-1>", lambda e, url=r.get("website"): open_website(url))
+
+
 
             else:
                 chat.insert(tk.END, f"AI: I couldn't find any {cuisine} restaurants.\n")
