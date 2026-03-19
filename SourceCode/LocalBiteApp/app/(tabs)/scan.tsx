@@ -31,58 +31,62 @@ export default function ScanScreen() {
         barcodeTypes: ["qr", "ean13", "code128"],
       }}
       onBarcodeScanned={async (event) => {
-        if (scanned) return;
+  if (scanned) return;
 
+  console.log("QR DATA:", event.data);
 
-        
-        console.log("QR DATA:", event.data);
-        
-        const restaurantId = event.data.replace("LOCALBITE_", "");
+  const restaurantId = event.data.replace("LOCALBITE_", "");
 
-        
-        const token = await SecureStore.getItemAsync("token");
+  const token = await SecureStore.getItemAsync("token");
 
-        if (!token) {
-          alert("You must be logged in to perform this action");
-          return;
-        }
-        
-        const decoded: any = jwtDecode(token);
-        const userId = decoded.id;
+  if (!token) {
+    alert("You must be logged in to perform this action");
+    return;
+  }
 
-        try {
-          const response = await fetch("https://comp2003-2025-2026-18.onrender.com/api/visit", {
-            method: "POST",
-            headers: { "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`
-             },
-            body: JSON.stringify({
-              userId: userId, restaurantId
-            })
-          });
+  const decoded = jwtDecode(token) as any;
+  const userId = decoded.id;
 
-          const data = await response.json();
+  console.log("ABOUT TO SEND FETCH");
+  console.log("TOKEN:", token);
 
-          if (response.ok) {
+  try {
+    const response = await fetch("https://comp2003-2025-2026-18.onrender.com/api/visit", {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        restaurantId
+      })
+    });
 
-            setScanned(true);
+    console.log("FETCH SENT");
 
-            router.push({
-              pathname: "/rate",
-              params: { id: restaurantId }
-            });
-          } else {
-            alert("Error: " + data.error);
-          }
-        } catch (err) {
-          console.error(err);
-          alert("Network error");
-        }
+    const data = await response.json();
+    console.log("FETCH RESPONSE:", data);
 
+    if (response.ok) {
+      // Only mark scanned AFTER the visit is tracked
+      setScanned(true);
 
-        // Allow scanning again after 3 seconds
-        setTimeout(() => setScanned(false), 3000);
-      }}
+      router.push({
+        pathname: "/rate",
+        params: { id: restaurantId }
+      });
+    } else {
+      alert("Error: " + data.error);
+    }
+  } catch (err) {
+    console.error("FETCH ERROR:", err);
+    alert("Network error");
+  }
+
+  // Allow scanning again after 3 seconds
+  setTimeout(() => setScanned(false), 3000);
+}}
+
     />
   );
 }
