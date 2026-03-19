@@ -1,30 +1,54 @@
-const express = require('express');
-const User = require('../models/User');
+const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/auth");
+const User = require("../models/User");
 
-router.post('/visit', async (req, res) => {
-    const { userId, restaurantId } = req.body;
+// POST /api/visit
+router.post("/visit", auth, async (req, res) => {
+  try {
+    const userId = req.user.id; // comes from JWT middleware
+    const { restaurantId } = req.body;
 
-    const user = await User.findById(userId);
-    const restaurant = await Restaurant.findById(restaurantId);
-
-    let visit = user.visitHistory.find(v => v.restaurantId.toString() === restaurantId);
-
-    if (visit) {
-        visit.count += 1;
-    } else {
-        visit = { restaurantId, count: 1 };
-        user.visitHistory.push(visit);
+    if (!restaurantId) {
+      return res.status(400).json({ error: "Restaurant ID is required" });
     }
 
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Find existing visit entry
+    let visit = user.visitHistory.find(
+      (v) => v.restaurantId.toString() === restaurantId
+    );
+
+    if (visit) {
+      visit.count += 1;
+    } else {
+      visit = { restaurantId, count: 1 };
+      user.visitHistory.push(visit);
+    }
+
+    // Achievement unlock example
     if (visit.count === 5) {
-        user.achievements.push({
-            name: `Visited ${restaurtant.role} restaurant 5 times`
-        });
+      user.achievements.push({
+        name: `Visited restaurant ${restaurantId} five times`,
+      });
     }
 
     await user.save();
-    res.json({ message: "visit recorded"});
+
+    res.json({
+      message: "Visit recorded",
+      count: visit.count,
+    });
+
+  } catch (err) {
+    console.error("VISIT ERROR:", err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 module.exports = router;
