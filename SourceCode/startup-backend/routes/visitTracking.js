@@ -3,6 +3,8 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const User = require("../models/User");
 
+console.log("VISIT ROUTE LOADED");
+
 // POST /api/visit
 router.post("/visit", auth, async (req, res) => {
     console.log("HEADERS:", req.headers);
