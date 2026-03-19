@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     password: {type: String, required: true },
 
     visitHistory: [{
-        restaurantId: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant' },
+        restaurantId: { type: String, required: true },
         count: { type: Number, default: 0 }
     }],
 
