@@ -38,6 +38,7 @@ export default function ScanScreen() {
   const restaurantId = event.data.replace("LOCALBITE_", "");
 
   const token = await SecureStore.getItemAsync("token");
+  console.log("token:")
 
   if (!token) {
     alert("You must be logged in to perform this action");
