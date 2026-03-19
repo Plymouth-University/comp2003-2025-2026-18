@@ -13,7 +13,7 @@ export default function SuccessScreen() {
 
       <Pressable
         style={styles.button}
-        onPress={() => router.replace("/")}
+        onPress={() => router.replace("/(tabs)/profile")}
       >
         <Text style={{ color: "white" }}>Back Home</Text>
       </Pressable>
