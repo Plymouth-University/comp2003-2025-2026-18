@@ -1,3 +1,7 @@
+const express = require("express");
+const router = express.Router();
+const User = require("../models/User");
+
 router.get("/leaderboard", async (req, res) => {
   try {
     const users = await User.find()
@@ -21,9 +25,12 @@ router.get("/leaderboard", async (req, res) => {
 
     leaderboard.sort((a, b) => b.totalVisits - a.totalVisits);
 
-    res.json(leaderboard); 
+    res.json(leaderboard); // MUST return array, not object
   } catch (err) {
     console.error("Leaderboard error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
+
+
+module.exports = router;
