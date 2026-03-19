@@ -68,7 +68,7 @@ export default function ScanScreen() {
     console.log("FETCH RESPONSE:", data);
 
     if (response.ok) {
-      // Only mark scanned AFTER the visit is tracked
+      // Only mark scanned AFTER the visit is trackde
       setScanned(true);
 
       router.push({
