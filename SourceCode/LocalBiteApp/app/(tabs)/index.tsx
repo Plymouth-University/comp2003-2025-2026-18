@@ -163,7 +163,7 @@ const RESTAURANTS: Restaurant[] = [
   },
   {
     id: "13",
-    name: "Can'n Jaspers",
+    name: "Cap'n Jaspers",
     cuisine: "American",
     rating: 4.9,
     minutes: 23,
