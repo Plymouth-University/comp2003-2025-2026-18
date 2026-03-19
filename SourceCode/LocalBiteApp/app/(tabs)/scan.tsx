@@ -33,7 +33,6 @@ export default function ScanScreen() {
       onBarcodeScanned={async (event) => {
         if (scanned) return;
 
-        setScanned(true);
 
         
         console.log("QR DATA:", event.data);
@@ -65,6 +64,9 @@ export default function ScanScreen() {
           const data = await response.json();
 
           if (response.ok) {
+
+            setScanned(true);
+
             router.push({
               pathname: "/rate",
               params: { id: restaurantId }
