@@ -5,6 +5,9 @@ const User = require("../models/User");
 
 // POST /api/visit
 router.post("/visit", auth, async (req, res) => {
+    console.log("HEADERS:", req.headers);
+    console.log("AUTH HEADER:", req.header("Authorization"));
+    console.log("USER FROM TOKEN:", req.user);
   try {
     const userId = req.user.id; // comes from JWT middleware
     const { restaurantId } = req.body;
