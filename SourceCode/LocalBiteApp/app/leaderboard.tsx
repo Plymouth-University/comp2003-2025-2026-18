@@ -13,7 +13,10 @@ export default function Leaderboard() {
   useEffect(() => {
     fetch("https://comp2003-2025-2026-18.onrender.com/api/leaderboard")
       .then(res => res.json())
-      .then(data => setLeaderboardData(data))
+      .then(data => {
+      console.log("LEADERBOARD RESPONSE:", data);
+      setLeaderboardData(data);
+    })
       .catch(err => console.log("Leaderboard fetch error:", err));
   }, []);
 
