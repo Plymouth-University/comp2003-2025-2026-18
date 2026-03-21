@@ -1,9 +1,25 @@
-import { View, Text, TextInput, Pressable, StyleSheet, FlatList, Linking, TouchableOpacity } from "react-native";
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  Pressable, 
+  StyleSheet, 
+  FlatList, 
+  Linking, 
+  TouchableOpacity 
+} from "react-native";
 import { useState } from "react";
+
+// Type for each chat message
+type ChatMessage = {
+  id: string;
+  text: string;
+  website?: string | null;
+};
 
 export default function ChatbotScreen() {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     { id: "1", text: "Hello! I'm the LocalBite assistant 🤖" },
     { id: "2", text: "Ask me for restaurant recommendations!" },
   ]);
@@ -12,9 +28,10 @@ export default function ChatbotScreen() {
     if (!message.trim()) return;
 
     // Add user message
-    const userMsg = {
+    const userMsg: ChatMessage = {
       id: Date.now().toString(),
       text: "You: " + message,
+      website: null
     };
     setMessages((prev) => [...prev, userMsg]);
 
@@ -27,19 +44,20 @@ export default function ChatbotScreen() {
 
       const data = await response.json();
 
-      // AI message
-      const aiMsg = {
+      // AI message (restaurant name + optional website)
+      const aiMsg: ChatMessage = {
         id: Date.now().toString() + "-ai",
-        text: "AI: " + data.reply,
-        website: data.website || null,   // store website if provided
+        text: data.reply,          // keep clean so it's clickable
+        website: data.website || null,
       };
 
       setMessages((prev) => [...prev, aiMsg]);
 
     } catch (error) {
-      const errorMsg = {
+      const errorMsg: ChatMessage = {
         id: Date.now().toString() + "-err",
         text: "AI: Sorry, I couldn't connect to the server.",
+        website: null
       };
       setMessages((prev) => [...prev, errorMsg]);
     }
@@ -48,18 +66,21 @@ export default function ChatbotScreen() {
   };
 
   // Render each message
-  const renderMessage = ({ item }) => {
-    const containsLink = item.website;
+  const renderMessage = ({ item }: { item: ChatMessage }) => {
+    const isLink = !!item.website;
 
     return (
       <TouchableOpacity
-        disabled={!containsLink}
-        onPress={() => containsLink && Linking.openURL(item.website)}
+        disabled={!isLink}
+        onPress={() => isLink && Linking.openURL(item.website!)}
       >
-        <Text style={[styles.message, containsLink && styles.link]}>
+        <Text style={[styles.message, isLink && styles.link]}>
           {item.text}
-          {containsLink ? "\nTap to open website" : ""}
         </Text>
+
+        {isLink && (
+          <Text style={styles.tapHint}>Tap to open website</Text>
+        )}
       </TouchableOpacity>
     );
   };
@@ -109,6 +130,12 @@ const styles = StyleSheet.create({
   link: {
     color: "#007AFF",
     textDecorationLine: "underline",
+  },
+
+  tapHint: {
+    fontSize: 12,
+    color: "#888",
+    marginBottom: 5,
   },
 
   inputRow: {
