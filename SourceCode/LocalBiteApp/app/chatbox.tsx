@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable, StyleSheet, FlatList } from "react-native";
+import { View, Text, TextInput, Pressable, StyleSheet, FlatList, Linking, TouchableOpacity } from "react-native";
 import { useState } from "react";
 
 export default function ChatbotScreen() {
@@ -9,8 +9,9 @@ export default function ChatbotScreen() {
   ]);
 
   const sendMessage = async () => {
-    if (!message) return;
+    if (!message.trim()) return;
 
+    // Add user message
     const userMsg = {
       id: Date.now().toString(),
       text: "You: " + message,
@@ -26,12 +27,15 @@ export default function ChatbotScreen() {
 
       const data = await response.json();
 
+      // AI message
       const aiMsg = {
         id: Date.now().toString() + "-ai",
         text: "AI: " + data.reply,
+        website: data.website || null,   // store website if provided
       };
 
       setMessages((prev) => [...prev, aiMsg]);
+
     } catch (error) {
       const errorMsg = {
         id: Date.now().toString() + "-err",
@@ -43,13 +47,30 @@ export default function ChatbotScreen() {
     setMessage("");
   };
 
+  // Render each message
+  const renderMessage = ({ item }) => {
+    const containsLink = item.website;
+
+    return (
+      <TouchableOpacity
+        disabled={!containsLink}
+        onPress={() => containsLink && Linking.openURL(item.website)}
+      >
+        <Text style={[styles.message, containsLink && styles.link]}>
+          {item.text}
+          {containsLink ? "\nTap to open website" : ""}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>LocalBite AI Assistant</Text>
 
       <FlatList
         data={messages}
-        renderItem={({ item }) => <Text style={styles.message}>{item.text}</Text>}
+        renderItem={renderMessage}
         keyExtractor={(item) => item.id}
       />
 
@@ -82,6 +103,12 @@ const styles = StyleSheet.create({
 
   message: {
     marginVertical: 5,
+    fontSize: 16,
+  },
+
+  link: {
+    color: "#007AFF",
+    textDecorationLine: "underline",
   },
 
   inputRow: {
