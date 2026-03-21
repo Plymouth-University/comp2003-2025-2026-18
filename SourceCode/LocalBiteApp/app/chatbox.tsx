@@ -44,14 +44,27 @@ export default function ChatbotScreen() {
 
       const data = await response.json();
 
-      // AI message (restaurant name + optional website)
-      const aiMsg: ChatMessage = {
-        id: Date.now().toString() + "-ai",
-        text: data.reply,          // keep clean so it's clickable
-        website: data.website || null,
+      // Add the main reply message
+      const replyMsg: ChatMessage = {
+        id: Date.now().toString() + "-reply",
+        text: data.reply,
+        website: null
       };
 
-      setMessages((prev) => [...prev, aiMsg]);
+      setMessages((prev) => [...prev, replyMsg]);
+
+      // Add each restaurant as its own clickable message
+      if (data.restaurants) {
+        data.restaurants.forEach((r: any) => {
+          const restaurantMsg: ChatMessage = {
+            id: Date.now().toString() + r.name,
+            text: `${r.name} ⭐ ${r.rating}`,
+            website: r.website
+          };
+
+          setMessages((prev) => [...prev, restaurantMsg]);
+        });
+      }
 
     } catch (error) {
       const errorMsg: ChatMessage = {

@@ -24,11 +24,18 @@ class Message(BaseModel):
 def chat(message: Message):
     user_message = message.text.lower().strip()
 
-    # Greeting
+    # -----------------------------
+    # GREETINGS
+    # -----------------------------
     if user_message in ["hi", "hello", "hey"]:
-        return {"reply": "Hi! I'm the LocalBite assistant 🍜 Ask me for restaurant recommendations."}
+        return {
+            "reply": "Hi! I'm the LocalBite assistant 🍜 Ask me for restaurant recommendations.",
+            "restaurants": []
+        }
 
-    # Cuisine detection
+    # -----------------------------
+    # CUISINE DETECTION
+    # -----------------------------
     cuisines = ["thai", "indian", "italian", "chinese", "american", "cafe"]
     for cuisine in cuisines:
         if cuisine in user_message:
@@ -39,30 +46,60 @@ def chat(message: Message):
             )
 
             if results:
-                text = f"Here are some great {cuisine.title()} restaurants:\n\n"
+                formatted = []
                 for r in results:
-                    text += f"🍽 {r['name']} ⭐ {r['rating']}\n"
-                return {"reply": text}
+                    formatted.append({
+                        "name": r["name"],
+                        "rating": r["rating"],
+                        "website": r.get("website", None)
+                    })
 
-            return {"reply": f"I couldn't find any {cuisine} restaurants."}
+                return {
+                    "reply": f"Here are some great {cuisine.title()} restaurants:",
+                    "restaurants": formatted
+                }
 
-    # General recommendation
+            return {
+                "reply": f"I couldn't find any {cuisine} restaurants.",
+                "restaurants": []
+            }
+
+    # -----------------------------
+    # GENERAL RECOMMENDATION
+    # -----------------------------
     if "recommend" in user_message or "best" in user_message:
         results = list(restaurants.find().sort("rating", -1).limit(5))
-        text = "Here are the highest rated restaurants right now:\n\n"
-        for r in results:
-            text += f"🍽 {r['name']} ({r['cuisine']}) ⭐ {r['rating']}\n"
-        return {"reply": text}
 
-    # Achievements
+        formatted = []
+        for r in results:
+            formatted.append({
+                "name": r["name"],
+                "rating": r["rating"],
+                "website": r.get("website", None)
+            })
+
+        return {
+            "reply": "Here are the highest rated restaurants right now:",
+            "restaurants": formatted
+        }
+
+    # -----------------------------
+    # ACHIEVEMENTS
+    # -----------------------------
     if "achievement" in user_message:
         return {
             "reply": (
                 "🏅 Food Explorer – Visit 5 restaurants\n"
                 "🏅 Master Reviewer – Write 10 reviews\n"
                 "🏅 Cuisine Expert – Try 3 cuisines"
-            )
+            ),
+            "restaurants": []
         }
 
-    # Default fallback
-    return {"reply": "I'm not sure I understood. Try asking for restaurant recommendations."}
+    # -----------------------------
+    # DEFAULT FALLBACK
+    # -----------------------------
+    return {
+        "reply": "I'm not sure I understood. Try asking for restaurant recommendations.",
+        "restaurants": []
+    }
