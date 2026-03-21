@@ -8,16 +8,38 @@ export default function ChatbotScreen() {
     { id: "2", text: "Ask me for restaurant recommendations!" },
   ]);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!message) return;
 
-    const newMessages = [
-      ...messages,
-      { id: Date.now().toString(), text: "You: " + message },
-      { id: Date.now().toString() + "ai", text: "AI: I recommend trying Thai food 🍜" },
-    ];
+    const userMsg = {
+      id: Date.now().toString(),
+      text: "You: " + message,
+    };
+    setMessages((prev) => [...prev, userMsg]);
 
-    setMessages(newMessages);
+    try {
+      const response = await fetch("https://ai-chatbot-5rgn.onrender.com/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: message }),
+      });
+
+      const data = await response.json();
+
+      const aiMsg = {
+        id: Date.now().toString() + "-ai",
+        text: "AI: " + data.reply,
+      };
+
+      setMessages((prev) => [...prev, aiMsg]);
+    } catch (error) {
+      const errorMsg = {
+        id: Date.now().toString() + "-err",
+        text: "AI: Sorry, I couldn't connect to the server.",
+      };
+      setMessages((prev) => [...prev, errorMsg]);
+    }
+
     setMessage("");
   };
 
