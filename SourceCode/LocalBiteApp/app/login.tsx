@@ -1,16 +1,15 @@
 import { useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
-
 
 const COLORS = {
   bg: "#0f0a05",
@@ -43,13 +42,13 @@ export default function LoginScreen() {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             email,
-            password
-          })
-        }
+            password,
+          }),
+        },
       );
 
       const data = await response.json();
@@ -60,7 +59,6 @@ export default function LoginScreen() {
       }
 
       router.replace("/(tabs)");
-
     } catch (err) {
       console.log(err);
       Alert.alert("Network error", "Unable to reach server");
@@ -128,7 +126,7 @@ export default function LoginScreen() {
 
         {/* Forgot */}
         <Pressable
-          onPress={() => Alert.alert("Forgot password", "We can add reset later")}
+          onPress={() => Alert.alert("Forgot password")}
           style={styles.forgotBtn}
         >
           <Text style={styles.forgotText}>Forgot password?</Text>
@@ -154,8 +152,6 @@ export default function LoginScreen() {
             <Text style={styles.bottomLink}> Sign up</Text>
           </Pressable>
         </View>
-
-        <Text style={styles.note}>UI only for now — authentication later.</Text>
       </View>
     </KeyboardAvoidingView>
   );
@@ -231,5 +227,10 @@ const styles = StyleSheet.create({
   bottomText: { color: COLORS.muted },
   bottomLink: { color: COLORS.accent, fontWeight: "900" },
 
-  note: { color: COLORS.muted2, marginTop: 14, fontSize: 12, textAlign: "center" },
+  note: {
+    color: COLORS.muted2,
+    marginTop: 14,
+    fontSize: 12,
+    textAlign: "center",
+  },
 });

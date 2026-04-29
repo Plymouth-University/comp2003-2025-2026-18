@@ -1,13 +1,14 @@
 import { useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 
 const COLORS = {
@@ -35,39 +36,46 @@ export default function SignupScreen() {
   const emailOk = useMemo(() => /\S+@\S+\.\S+/.test(email.trim()), [email]);
   const nameOk = useMemo(() => name.trim().length >= 2, [name]);
   const passOk = useMemo(() => pass.length >= 6, [pass]);
-  const matchOk = useMemo(() => confirm === pass && confirm.length > 0, [confirm, pass]);
+  const matchOk = useMemo(
+    () => confirm === pass && confirm.length > 0,
+    [confirm, pass],
+  );
 
   const canCreate = nameOk && emailOk && passOk && matchOk;
 
   const signup = async () => {
     try {
+      console.log("Sending signup request...");
+
       const response = await fetch(
         "https://comp2003-2025-2026-18.onrender.com/api/register",
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: name,
+            name: name, // ✅ FIXED
             email: email,
-            password: pass
-          })
-        }
+            password: pass,
+          }),
+        },
       );
 
       const data = await response.json();
 
+      console.log("SIGNUP RESPONSE:", data);
+
       if (!response.ok) {
-        alert(data.message);
+        Alert.alert("Signup failed", data.message || "Try again");
         return;
       }
 
-      alert("Account created!");
+      Alert.alert("Success", "Account created! You can now log in.");
       router.replace("/login");
     } catch (err) {
-      console.log(err);
-      alert("Network error");
+      console.log("SIGNUP ERROR:", err);
+      Alert.alert("Network error", "Unable to reach server");
     }
   };
 
@@ -75,8 +83,6 @@ export default function SignupScreen() {
     setTouched(true);
     if (!canCreate) return;
 
-    
-    // After sign up, go back to login
     signup();
   };
 
@@ -87,8 +93,11 @@ export default function SignupScreen() {
     >
       <View style={styles.card}>
         <Text style={styles.title}>Create account</Text>
-        <Text style={styles.subtitle}>Join LocalBite and find great food 🧡</Text>
+        <Text style={styles.subtitle}>
+          Join LocalBite and find great food 🧡
+        </Text>
 
+        {/* Name */}
         <View style={styles.field}>
           <Text style={styles.label}>Name</Text>
           <TextInput
@@ -99,9 +108,12 @@ export default function SignupScreen() {
             placeholderTextColor={COLORS.muted2}
             style={styles.input}
           />
-          {touched && !nameOk ? <Text style={styles.error}>Enter your name.</Text> : null}
+          {touched && !nameOk ? (
+            <Text style={styles.error}>Enter your name.</Text>
+          ) : null}
         </View>
 
+        {/* Email */}
         <View style={styles.field}>
           <Text style={styles.label}>Email</Text>
           <TextInput
@@ -114,9 +126,12 @@ export default function SignupScreen() {
             keyboardType="email-address"
             style={styles.input}
           />
-          {touched && !emailOk ? <Text style={styles.error}>Enter a valid email.</Text> : null}
+          {touched && !emailOk ? (
+            <Text style={styles.error}>Enter a valid email.</Text>
+          ) : null}
         </View>
 
+        {/* Password */}
         <View style={styles.field}>
           <Text style={styles.label}>Password</Text>
           <TextInput
@@ -128,9 +143,12 @@ export default function SignupScreen() {
             secureTextEntry
             style={styles.input}
           />
-          {touched && !passOk ? <Text style={styles.error}>Min 6 characters.</Text> : null}
+          {touched && !passOk ? (
+            <Text style={styles.error}>Min 6 characters.</Text>
+          ) : null}
         </View>
 
+        {/* Confirm Password */}
         <View style={styles.field}>
           <Text style={styles.label}>Confirm password</Text>
           <TextInput
@@ -142,9 +160,12 @@ export default function SignupScreen() {
             secureTextEntry
             style={styles.input}
           />
-          {touched && !matchOk ? <Text style={styles.error}>Passwords must match.</Text> : null}
+          {touched && !matchOk ? (
+            <Text style={styles.error}>Passwords must match.</Text>
+          ) : null}
         </View>
 
+        {/* Button */}
         <Pressable
           disabled={!canCreate}
           onPress={onCreate}
@@ -157,6 +178,7 @@ export default function SignupScreen() {
           <Text style={styles.buttonText}>Create account</Text>
         </Pressable>
 
+        {/* Login Link */}
         <View style={styles.bottomRow}>
           <Text style={styles.bottomText}>Already have an account?</Text>
           <Pressable onPress={() => router.replace("/login")}>

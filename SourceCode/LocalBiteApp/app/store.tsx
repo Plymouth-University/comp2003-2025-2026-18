@@ -19,15 +19,15 @@ export function AppProvider({ children }: any) {
     const today = new Date().toDateString();
 
     const alreadyVisited = wallet.find(
-      (v) => v.restaurantId === restaurantId && v.date === today
+      (v) => v.restaurantId === restaurantId && v.date === today,
     );
 
     if (alreadyVisited) {
-      return false; 
+      return false;
     }
 
     setWallet([...wallet, { restaurantId, date: today }]);
-    return true; 
+    return true;
   };
 
   return (
@@ -42,3 +42,6 @@ export const useApp = () => {
   if (!context) throw new Error("useApp must be used inside AppProvider");
   return context;
 };
+export default function Store() {
+  return null;
+}
