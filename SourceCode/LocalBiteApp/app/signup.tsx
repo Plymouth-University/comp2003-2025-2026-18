@@ -55,7 +55,7 @@ export default function SignupScreen() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: name, // ✅ FIXED
+            username: name, // ✅ FIXED
             email: email,
             password: pass,
           }),
