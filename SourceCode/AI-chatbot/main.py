@@ -5,8 +5,16 @@ from pymongo import MongoClient
 # -----------------------------
 # Database Connection
 # -----------------------------
+print("testing MongoDB connect")
+
 client = MongoClient("mongodb+srv://localbite_user:localbite1234@cluster0.allr1ut.mongodb.net/?retryWrites=true&w=majority")
 db = client["LocalBite"]
+
+try:
+    print(db.list_collection_names())
+except Exception as e:
+    print("MongoDB Error:", e)
+
 restaurants = db["Restaurants"]
 
 # -----------------------------
