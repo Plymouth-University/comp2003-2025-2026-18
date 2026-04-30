@@ -1,0 +1,82 @@
+[{
+  "_id": {
+    "$oid": "698dc66bf657b7684879231e"
+  }
+},
+{
+  "_id": {
+    "$oid": "698dc9cbf657b76848792320"
+  },
+  "title": "Visit a Thai restaurant 5 times",
+  "description": "Explore Thai cuisine and unlock rewards",
+  "type": "cuisine",
+  "cuisineTag": "Thai",
+  "targetVisits": 5,
+  "rewardPoints": 100,
+  "badge": "Thai Explorer",
+  "tier": "Bronze",
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-02-12T12:38:35.880Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "698dcb11f657b76848792322"
+  },
+  "title": "Italian Food Lover",
+  "description": "Visit Italian restaurants 10 times",
+  "cuisineTag": "Italian",
+  "targetVisits": 10,
+  "reward": 200,
+  "tier": "silver",
+  "icon": "🍝",
+  "createdAt": {
+    "$date": "2026-02-12T12:44:01.899Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "698dcb11f657b76848792323"
+  },
+  "title": "Mexican Cuisine Explorer",
+  "description": "Try 3 different Mexican restaurants",
+  "cuisineTag": "Mexican",
+  "targetVisits": 3,
+  "reward": 150,
+  "tier": "bronze",
+  "icon": "🌮",
+  "createdAt": {
+    "$date": "2026-02-12T12:44:01.899Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "698dcb11f657b76848792324"
+  },
+  "title": "Foodie Champion",
+  "description": "Visit 50 restaurants total",
+  "cuisineTag": "All",
+  "targetVisits": 50,
+  "reward": 500,
+  "tier": "gold",
+  "icon": "👑",
+  "createdAt": {
+    "$date": "2026-02-12T12:44:01.899Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "698dcb11f657b76848792325"
+  },
+  "title": "Weekend Warrior",
+  "description": "Visit 5 restaurants on weekends",
+  "cuisineTag": "All",
+  "targetVisits": 5,
+  "reward": 75,
+  "tier": "bronze",
+  "icon": "🎉",
+  "createdAt": {
+    "$date": "2026-02-12T12:44:01.899Z"
+  }
+}]

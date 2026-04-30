@@ -1,85 +1,32 @@
 from pymongo import MongoClient
 import tkinter as tk
+import tkinter.messagebox
+import webbrowser
 
-# Connect to MongoDB
-client = MongoClient("mongodb://localhost:27017/") 
-db = client["Localbite"]
-restaurants = db["restaurants"]
+# -----------------------------
+# Database Connection
+# -----------------------------
+client = MongoClient("mongodb+srv://localbite_user:localbite1234@cluster0.allr1ut.mongodb.net/?retryWrites=true&w=majority")
+db = client["LocalBite"]
+restaurants = db["Restaurants"]
 
-print("Restaurant data:", list(restaurants.find())
-
-def send_message():
-
-    user_message = entry.get().lower()
-
-    if user_message.strip() == "":
-        return
-
-    chat.insert(tk.END, f"\nYou: {user_message}\n")
-
-  # Greeting (fixed so it doesn't trigger on "achievements)
-    if user_message in ["hi", "hello", "hey"]:
-        chat.insert(tk.END, "AI: Hi! I'm the LocalBite assistant. Ask me for food recommendations.\n")
-
- # Cuisine detection
-    cuisines = ["thai", "indian", "italian", "chinese", "american", "cafe"]
-
-    for cuisine in cuisines:
-        if cuisine in user_message:
-
-            results = list(
-                restaurants.find(
-                    {"cuisine": {"$regex": cuisine, "$options": "i"}}
-                ).sort("rating", -1).limit(3)
-            )
-
-            if results:
-                chat.insert(tk.END, f"AI: Here are some great {cuisine.title()} restaurants:\n\n")
-
-                for r in results:
-                    chat.insert(tk.END, f"🍽 {r['name']} ⭐ {r['rating']}\n")
-
-            else:
-                chat.insert(tk.END, f"AI: I couldn't find any {cuisine} restaurants.\n")
-
-            chat.see(tk.END)
-            entry.delete(0, tk.END)
-            return
-
-
-
-# General recommendation
-    elif "recommend" in user_message or "best" in user_message:
-
-        results = restaurants.find().sort("rating",-1).limit(5)
-
-        chat.insert(tk.END, "AI: Here are the highest rated restaurants right now:\n")
-
-        for r in results:
-            chat.insert(tk.END, f"🍽 {r['name']} ({r['cuisine']}) ⭐ {r['rating']}\n")
-
-    # Achievements
-    elif "achievement" in user_message:
-
-        chat.insert(tk.END, "AI: You can unlock achievements like:\n")
-        chat.insert(tk.END, "🏅 Food Explorer – Visit 5 restaurants\n")
-        chat.insert(tk.END, "🏅 Master Reviewer – Write 10 reviews\n")
-        chat.insert(tk.END, "🏅 Cuisine Expert – Try 3 cuisines\n")
-
+# -----------------------------
+# Open Website Function
+# -----------------------------
+def open_website(url):
+    if url:
+        webbrowser.open(url)
     else:
-        chat.insert(tk.END, "AI: I'm not sure I understood. Try asking for restaurant recommendations.\n")
+        tk.messagebox.showinfo("No Website", "Sorry, this restaurant doesn't have a website listed.")
 
-    chat.see(tk.END)
-    entry.delete(0, tk.END)
-
-# Window
+# -----------------------------
+# GUI Setup FIRST
+# -----------------------------
 window = tk.Tk()
 window.title("LocalBite AI Chatbot")
 window.geometry("600x600")
 window.configure(bg="#f4f4f4")
 
-
-# Header
 header = tk.Label(
     window,
     text="🍜 LocalBite AI Assistant",
@@ -90,8 +37,6 @@ header = tk.Label(
 )
 header.pack(fill=tk.X)
 
-
-# Chat Frame
 chat_frame = tk.Frame(window)
 chat_frame.pack(pady=10)
 
@@ -110,55 +55,101 @@ scrollbar.config(command=chat.yview)
 scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 chat.pack(side=tk.LEFT)
 
-# Chat bubble styles
-chat.tag_configure(
-    "user",
-    justify="right",
-    background="#d2e3fc",
-    lmargin1=150,
-    lmargin2=150,
-    spacing3=5
-)
+chat.tag_configure("user", justify="right", background="#d2e3fc", lmargin1=150, lmargin2=150, spacing3=5)
+chat.tag_configure("bot", justify="left", background="#f1f3f4", rmargin=150, spacing3=5)
 
-chat.tag_configure(
-    "bot",
-    justify="left",
-    background="#f1f3f4",
-    rmargin=150,
-    spacing3=5
-)
-
-# Input Frame
 input_frame = tk.Frame(window, bg="#f4f4f4")
 input_frame.pack(pady=10)
 
-
-entry = tk.Entry(
-    input_frame,
-    width=40,
-    font=("Helvetica", 12)
-)
+entry = tk.Entry(input_frame, width=45, font=("Helvetica", 12), bd=2, relief="groove")
 entry.pack(side=tk.LEFT, padx=10)
 
+# -----------------------------
+# Chatbot Logic (AFTER chat exists)
+# -----------------------------
+def send_message():
 
-send_button = tk.Button(
-    input_frame,
-    text="Send",
-    font=("Helvetica", 11),
-    bg="#ff914d",
-    fg="white",
-    command=send_message
-)
+    user_message = entry.get().lower().strip()
+    if user_message == "":
+        return
+
+    chat.insert(tk.END, f"\nYou: {user_message}\n", "user")
+
+    # Greeting
+    if user_message in ["hi", "hello", "hey"]:
+        chat.insert(tk.END, "AI: Hi! I'm the LocalBite assistant 🍜 Ask me for restaurant recommendations.\n", "bot")
+
+    # Cuisine detection
+    cuisines = ["thai", "indian", "italian", "chinese", "american", "cafe"]
+
+    for cuisine in cuisines:
+        if cuisine in user_message:
+
+            results = list(
+                restaurants.find(
+                    {"cuisine": {"$regex": cuisine, "$options": "i"}}
+                ).sort("rating", -1).limit(3)
+            )
+
+            if results:
+                chat.insert(tk.END, f"AI: Here are some great {cuisine.title()} restaurants:\n\n", "bot")
+                chat.insert(tk.END, "")  # prevents tag overlap
+
+                for r in results:
+                    tag = str(r["_id"])
+
+                    chat.insert(tk.END, f"🍽 {r['name']} ⭐ {r['rating']}\n", tag)
+
+                    chat.tag_config(tag, foreground="blue", underline=True)
+
+                    chat.tag_bind(tag, "<Enter>", lambda e: chat.config(cursor="hand2"))
+                    chat.tag_bind(tag, "<Leave>", lambda e: chat.config(cursor=""))
+
+                    chat.tag_bind(tag, "<Button-1>", lambda e, restaurant=r: open_website(restaurant.get("website")))
+
+            else:
+                chat.insert(tk.END, f"AI: I couldn't find any {cuisine} restaurants.\n", "bot")
+
+            chat.see(tk.END)
+            entry.delete(0, tk.END)
+            return
+
+    # General recommendation
+    if "recommend" in user_message or "best" in user_message:
+
+        results = list(restaurants.find().sort("rating", -1).limit(5))
+
+        chat.insert(tk.END, "AI: Here are the highest rated restaurants right now:\n\n", "bot")
+
+        for r in results:
+            tag = str(r["_id"])
+            chat.insert(tk.END, f"🍽 {r['name']} ({r['cuisine']}) ⭐ {r['rating']}\n", tag)
+            chat.tag_config(tag, foreground="blue", underline=True)
+            chat.tag_bind(tag, "<Button-1>", lambda e, restaurant=r: open_website(restaurant.get("website")))
+
+    # Achievements
+    elif "achievement" in user_message:
+        chat.insert(tk.END, "AI: You can unlock achievements like:\n", "bot")
+        chat.insert(tk.END, "🏅 Food Explorer – Visit 5 restaurants\n", "bot")
+        chat.insert(tk.END, "🏅 Master Reviewer – Write 10 reviews\n", "bot")
+        chat.insert(tk.END, "🏅 Cuisine Expert – Try 3 cuisines\n", "bot")
+
+    else:
+        chat.insert(tk.END, "AI: I'm not sure I understood. Try asking for restaurant recommendations.\n", "bot")
+
+    chat.see(tk.END)
+    entry.delete(0, tk.END)
+
+# -----------------------------
+# Bind Send Button
+# -----------------------------
+send_button = tk.Button(input_frame, text="Send", font=("Helvetica", 11), bg="#ff914d", fg="white", command=send_message)
 send_button.pack(side=tk.LEFT)
 
-
-# Allow Enter key to send messages
 window.bind('<Return>', lambda event: send_message())
 
-
 # Welcome message
-chat.insert(tk.END, "AI: Hello! I'm the LocalBite assistant 🍜\n")
-chat.insert(tk.END, "AI: Ask me for restaurant recommendations or cuisines!\n\n")
-
+chat.insert(tk.END, "AI: Hello! I'm the LocalBite assistant 🍜\n", "bot")
+chat.insert(tk.END, "AI: Ask me for restaurant recommendations or cuisines!\n\n", "bot")
 
 window.mainloop()

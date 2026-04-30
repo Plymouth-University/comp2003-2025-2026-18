@@ -1,0 +1,21 @@
+[{
+  "_id": {
+    "$oid": "692cd97dfc8c2ec4130513ef"
+  },
+  "username": "john_doe",
+  "email": "john@example.com",
+  "phone": "0791587463201"
+},
+{
+  "_id": {
+    "$oid": "698083eb8a0901cea5549629"
+  },
+  "role": "user"
+},
+{
+  "_id": {
+    "$oid": "698084108a0901cea554962a"
+  },
+  "email": 12345,
+  "role": "user"
+}]

@@ -1,24 +1,101 @@
-import { View, Text, TextInput, Pressable, StyleSheet, FlatList } from "react-native";
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  Pressable, 
+  StyleSheet, 
+  FlatList, 
+  Linking, 
+  TouchableOpacity 
+} from "react-native";
 import { useState } from "react";
+
+// Type for each chat message
+type ChatMessage = {
+  id: string;
+  text: string;
+  website?: string | null;
+};
 
 export default function ChatbotScreen() {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     { id: "1", text: "Hello! I'm the LocalBite assistant 🤖" },
     { id: "2", text: "Ask me for restaurant recommendations!" },
   ]);
 
-  const sendMessage = () => {
-    if (!message) return;
+  const sendMessage = async () => {
+    if (!message.trim()) return;
 
-    const newMessages = [
-      ...messages,
-      { id: Date.now().toString(), text: "You: " + message },
-      { id: Date.now().toString() + "ai", text: "AI: I recommend trying Thai food 🍜" },
-    ];
+    // Add user message
+    const userMsg: ChatMessage = {
+      id: Date.now().toString(),
+      text: "You: " + message,
+      website: null
+    };
+    setMessages((prev) => [...prev, userMsg]);
 
-    setMessages(newMessages);
+    try {
+      const response = await fetch("https://ai-chatbot-5rgn.onrender.com/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: message }),
+      });
+
+      const data = await response.json();
+
+      // Add the main reply message
+      const replyMsg: ChatMessage = {
+        id: Date.now().toString() + "-reply",
+        text: data.reply,
+        website: null
+      };
+
+      setMessages((prev) => [...prev, replyMsg]);
+
+      // Add each restaurant as its own clickable message
+      if (data.restaurants) {
+        data.restaurants.forEach((r: any) => {
+          const restaurantMsg: ChatMessage = {
+            id: Date.now().toString() + r.name,
+            text: `${r.name} ⭐ ${r.rating}`,
+            website: r.website
+          };
+
+          setMessages((prev) => [...prev, restaurantMsg]);
+        });
+      }
+
+    } catch (error) {
+      const errorMsg: ChatMessage = {
+        id: Date.now().toString() + "-err",
+        text: "AI: Sorry, I couldn't connect to the server.",
+        website: null
+      };
+      setMessages((prev) => [...prev, errorMsg]);
+    }
+
     setMessage("");
+  };
+
+  // Render each message
+  const renderMessage = ({ item }: { item: ChatMessage }) => {
+    const isLink = !!item.website;
+
+    return (
+      <TouchableOpacity
+        disabled={!isLink}
+        onPress={() => isLink && Linking.openURL(item.website!)}
+      >
+        <Text style={[styles.message, isLink && styles.link]}>
+          {item.text}
+        </Text>
+
+        {isLink && (
+          <Text style={styles.tapHint}>Tap to open website</Text>
+        )}
+      </TouchableOpacity>
+    );
   };
 
   return (
@@ -27,7 +104,7 @@ export default function ChatbotScreen() {
 
       <FlatList
         data={messages}
-        renderItem={({ item }) => <Text style={styles.message}>{item.text}</Text>}
+        renderItem={renderMessage}
         keyExtractor={(item) => item.id}
       />
 
@@ -60,6 +137,18 @@ const styles = StyleSheet.create({
 
   message: {
     marginVertical: 5,
+    fontSize: 16,
+  },
+
+  link: {
+    color: "#007AFF",
+    textDecorationLine: "underline",
+  },
+
+  tapHint: {
+    fontSize: 12,
+    color: "#888",
+    marginBottom: 5,
   },
 
   inputRow: {

@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     password: {type: String, required: true },
 
     visitHistory: [{
-        restaurantId: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant' },
+        restaurantId: { type: String, required: true },
         count: { type: Number, default: 0 }
     }],
 
@@ -17,4 +17,4 @@ const userSchema = new mongoose.Schema({
 
 }, { timestamps: true});
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema, 'Users');

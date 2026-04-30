@@ -1,0 +1,72 @@
+[{
+  "_id": {
+    "$oid": "698dcb11f657b76848792329"
+  },
+  "userId": {
+    "$oid": "698dcb11f657b7684879232a"
+  },
+  "restaurantId": {
+    "$oid": "698f2694898db444d363f184"
+  },
+  "visitDate": {
+    "$date": "2026-02-12T12:44:01.935Z"
+  },
+  "cuisineTag": "Thai",
+  "createdAt": {
+    "$date": "2026-02-12T12:44:01.935Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "698f2940898db444d363f188"
+  },
+  "userId": {
+    "$oid": "692cd97dfc8c2ec4130513ef"
+  },
+  "restaurantId": {
+    "$oid": "698f2694898db444d363f184"
+  },
+  "visitDate": {
+    "$date": "2026-02-05T00:00:00.000Z"
+  },
+  "cuisineTag": "Thai",
+  "createdAt": {
+    "$date": "2026-02-13T13:38:08.313Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "698f2940898db444d363f189"
+  },
+  "userId": {
+    "$oid": "692cd97dfc8c2ec4130513ef"
+  },
+  "restaurantId": {
+    "$oid": "698f27a7898db444d363f185"
+  },
+  "visitDate": {
+    "$date": "2026-02-08T00:00:00.000Z"
+  },
+  "cuisineTag": "Thai",
+  "createdAt": {
+    "$date": "2026-02-13T13:38:08.327Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "698f2940898db444d363f18a"
+  },
+  "userId": {
+    "$oid": "692cd97dfc8c2ec4130513ef"
+  },
+  "restaurantId": {
+    "$oid": "698f27a7898db444d363f186"
+  },
+  "visitDate": {
+    "$date": "2026-02-10T00:00:00.000Z"
+  },
+  "cuisineTag": "Thai",
+  "createdAt": {
+    "$date": "2026-02-13T13:38:08.330Z"
+  }
+}]

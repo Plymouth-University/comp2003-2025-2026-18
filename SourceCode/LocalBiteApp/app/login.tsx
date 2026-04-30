@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
@@ -41,22 +42,24 @@ export default function LoginScreen() {
         "https://comp2003-2025-2026-18.onrender.com/api/login",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
         },
       );
 
       const data = await response.json();
+      console.log("LOGIN RESPONSE:", data);
 
       if (!response.ok) {
         Alert.alert("Login failed", data.message);
         return;
       }
+
+      // Save user info for Profile screen
+      await AsyncStorage.setItem("userId", data.user.id);
+      await AsyncStorage.setItem("username", data.user.username);
+      await AsyncStorage.setItem("email", data.user.email);
+      await AsyncStorage.setItem("token", data.token);
 
       router.replace("/(tabs)");
     } catch (err) {
@@ -68,7 +71,6 @@ export default function LoginScreen() {
   const onLogin = () => {
     setTouched(true);
     if (!canLogin) return;
-
     login();
   };
 
@@ -126,13 +128,15 @@ export default function LoginScreen() {
 
         {/* Forgot */}
         <Pressable
-          onPress={() => Alert.alert("Forgot password")}
+          onPress={() =>
+            Alert.alert("Forgot password", "We can add reset later")
+          }
           style={styles.forgotBtn}
         >
           <Text style={styles.forgotText}>Forgot password?</Text>
         </Pressable>
 
-        {/* Login Button (disabled until valid) */}
+        {/* Login Button */}
         <Pressable
           disabled={!canLogin}
           onPress={onLogin}
@@ -145,13 +149,15 @@ export default function LoginScreen() {
           <Text style={styles.buttonText}>Log in</Text>
         </Pressable>
 
-        {/*  Sign up link */}
+        {/* Sign up link */}
         <View style={styles.bottomRow}>
           <Text style={styles.bottomText}>Don’t have an account?</Text>
           <Pressable onPress={() => router.push("/signup")}>
             <Text style={styles.bottomLink}> Sign up</Text>
           </Pressable>
         </View>
+
+        <Text style={styles.note}></Text>
       </View>
     </KeyboardAvoidingView>
   );

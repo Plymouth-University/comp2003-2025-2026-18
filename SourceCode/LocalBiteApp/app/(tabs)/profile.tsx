@@ -1,19 +1,19 @@
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  Alert,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useMemo, useState } from "react";
-import { router } from "expo-router";
-import { TouchableOpacity } from "react-native";
-import {
-    Alert,
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const COLORS = {
   bg: "#0f0a05",
@@ -31,12 +31,23 @@ const COLORS = {
 export default function ProfileScreen() {
   const router = useRouter();
 
-  // UI-only demo profile
-  const [name, setName] = useState("Dewmini");
-  const [email, setEmail] = useState("you@example.com");
-  const [location, setLocation] = useState("Plymouth, UK");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [location, setLocation] = useState("");
 
   const emailOk = useMemo(() => /\S+@\S+\.\S+/.test(email.trim()), [email]);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const storedName = await AsyncStorage.getItem("username");
+      const storedEmail = await AsyncStorage.getItem("email");
+
+      if (storedName) setName(storedName);
+      if (storedEmail) setEmail(storedEmail);
+    };
+
+    loadUser();
+  }, []);
 
   const onSave = () => {
     if (!emailOk) {
@@ -46,7 +57,8 @@ export default function ProfileScreen() {
     Alert.alert("Saved", "Profile updated (UI only).");
   };
 
-  const onLogout = () => {
+  const onLogout = async () => {
+    await AsyncStorage.clear();
     router.replace("/login");
   };
 
@@ -115,39 +127,39 @@ export default function ProfileScreen() {
           </View>
 
           <TouchableOpacity
-  style={styles.leaderboardButton}
-  onPress={() => router.push("/leaderboard")}
->
-  <Text style={styles.leaderboardText}>🏆 View Leaderboard</Text>
-</TouchableOpacity>
-          {/* Achievements Section */}
-<View style={styles.achievementSection}>
-  <Text style={styles.sectionTitle}>🏆 Achievements</Text>
+            style={styles.leaderboardButton}
+            onPress={() => router.push("/leaderboard")}
+          >
+            <Text style={styles.leaderboardText}>🏆 View Leaderboard</Text>
+          </TouchableOpacity>
 
-  <View style={styles.achievementRow}>
-    <View style={styles.achievementBox}>
-      <Text style={styles.achievementNumber}>5</Text>
-      <Text style={styles.achievementLabel}>Orders</Text>
-    </View>
+          <View style={styles.achievementSection}>
+            <Text style={styles.sectionTitle}>🏆 Achievements</Text>
 
-    <View style={styles.achievementBox}>
-      <Text style={styles.achievementNumber}>3</Text>
-      <Text style={styles.achievementLabel}>Badges</Text>
-    </View>
-  </View>
+            <View style={styles.achievementRow}>
+              <View style={styles.achievementBox}>
+                <Text style={styles.achievementNumber}>0</Text>
+                <Text style={styles.achievementLabel}>Orders</Text>
+              </View>
 
-  <View style={styles.achievementRow}>
-    <View style={styles.achievementBox}>
-      <Text style={styles.achievementNumber}>7</Text>
-      <Text style={styles.achievementLabel}>Day Streak</Text>
-    </View>
+              <View style={styles.achievementBox}>
+                <Text style={styles.achievementNumber}>0</Text>
+                <Text style={styles.achievementLabel}>Badges</Text>
+              </View>
+            </View>
 
-    <View style={styles.achievementBox}>
-      <Text style={styles.achievementNumber}>12</Text>
-      <Text style={styles.achievementLabel}>Saved</Text>
-    </View>
-  </View>
-</View>
+            <View style={styles.achievementRow}>
+              <View style={styles.achievementBox}>
+                <Text style={styles.achievementNumber}>0</Text>
+                <Text style={styles.achievementLabel}>Day Streak</Text>
+              </View>
+
+              <View style={styles.achievementBox}>
+                <Text style={styles.achievementNumber}>0</Text>
+                <Text style={styles.achievementLabel}>Saved</Text>
+              </View>
+            </View>
+          </View>
 
           <Pressable onPress={onSave} style={styles.primaryBtn}>
             <MaterialIcons name="save" size={18} color={COLORS.bg} />
@@ -166,11 +178,7 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: COLORS.bg },
-
-  
-  scroll: {
-    paddingBottom: 110,
-  },
+  scroll: { paddingBottom: 110 },
 
   header: { paddingHorizontal: 16, paddingTop: 80, paddingBottom: 20 },
   title: { color: COLORS.text, fontSize: 28, fontWeight: "900" },
@@ -246,59 +254,59 @@ const styles = StyleSheet.create({
   outlineText: { color: COLORS.accent, fontWeight: "900", fontSize: 16 },
 
   achievementSection: {
-  marginTop: 20,
-  paddingTop: 16,
-  borderTopWidth: 1,
-  borderTopColor: COLORS.border,
-},
+    marginTop: 20,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.border,
+  },
 
-sectionTitle: {
-  color: COLORS.text,
-  fontWeight: "900",
-  fontSize: 18,
-  marginBottom: 12,
-},
+  sectionTitle: {
+    color: COLORS.text,
+    fontWeight: "900",
+    fontSize: 18,
+    marginBottom: 12,
+  },
 
-achievementRow: {
-  flexDirection: "row",
-  justifyContent: "space-between",
-  marginBottom: 12,
-},
+  achievementRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
 
-achievementBox: {
-  flex: 1,
-  backgroundColor: COLORS.surface2,
-  borderRadius: 14,
-  paddingVertical: 16,
-  alignItems: "center",
-  borderWidth: 1,
-  borderColor: COLORS.border,
-  marginHorizontal: 4,
-},
+  achievementBox: {
+    flex: 1,
+    backgroundColor: COLORS.surface2,
+    borderRadius: 14,
+    paddingVertical: 16,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    marginHorizontal: 4,
+  },
 
-achievementNumber: {
-  color: COLORS.accent,
-  fontSize: 20,
-  fontWeight: "900",
-},
+  achievementNumber: {
+    color: COLORS.accent,
+    fontSize: 20,
+    fontWeight: "900",
+  },
 
-achievementLabel: {
-  color: COLORS.muted,
-  marginTop: 6,
-  fontSize: 13,
-},
+  achievementLabel: {
+    color: COLORS.muted,
+    marginTop: 6,
+    fontSize: 13,
+  },
 
-leaderboardButton: {
-  marginTop: 20,
-  backgroundColor: "#ff8c1a",
-  padding: 12,
-  borderRadius: 10,
-  alignItems: "center",
-},
+  leaderboardButton: {
+    marginTop: 20,
+    backgroundColor: "#ff8c1a",
+    padding: 12,
+    borderRadius: 10,
+    alignItems: "center",
+  },
 
-leaderboardText: {
-  color: "#1a1208",
-  fontWeight: "bold",
-  fontSize: 16,
-},
+  leaderboardText: {
+    color: "#1a1208",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
 });

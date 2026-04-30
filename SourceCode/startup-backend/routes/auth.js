@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+
 const router = express.Router();
 
 //Register new user
@@ -51,7 +52,7 @@ router.post('/login', async (req, res) => {
             token,
             user: {
                 id: user._id,
-                name: user.name,
+                username: user.username,
                 email:user.email
             }
         });
