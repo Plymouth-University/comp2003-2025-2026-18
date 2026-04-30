@@ -36,7 +36,7 @@ export default function ChatbotScreen() {
     setMessages((prev) => [...prev, userMsg]);
 
     try {
-      const response = await fetch("https://ai-chatbot-5rgn.onrender.com/chat", {
+      const response = await fetch("https://ai-chatbot-eo87.onrender.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: message }),
